@@ -61,6 +61,29 @@ public final class SimpleTeleport extends JavaPlugin {
             }, (long)await * 60 * 20);
             return true;
         }
+        if (command.getName().equalsIgnoreCase("tpcancel")) {
+            ArrayList<String[]> buffer = new ArrayList<>();
+            if (args.length == 0) {
+                for (String[] v : req) {
+                    if (v[0].equalsIgnoreCase(player.getName()))
+                        buffer.add(v);
+                }
+                req.removeAll(buffer);
+                player.sendMessage(ChatColor.AQUA + "All your requests were cancelled.");
+                return true;
+            }
+            else {
+                Player target = getServer().getPlayer(args[0]);
+                if (target == null)
+                    return false;
+                for (String[] v : req) {
+                    if (v[0].equalsIgnoreCase(player.getName()) && v[1].equalsIgnoreCase(player.getName()))
+                        buffer.add(v);
+                }
+                req.removeAll(buffer);
+                player.sendMessage(ChatColor.AQUA + "All your request to " + ChatColor.WHITE + target.getName() + ChatColor.AQUA + " was cancelled.");
+            }
+        }
         if (command.getName().equalsIgnoreCase("tpacc")) {
             ArrayList<String[]> buffer = new ArrayList<>();
             for (String[] v : req) {
