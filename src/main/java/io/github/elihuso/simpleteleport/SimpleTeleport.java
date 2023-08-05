@@ -5,21 +5,41 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public final class SimpleTeleport extends JavaPlugin {
+
+    public static ArrayList<String[]> req = new ArrayList<>();
+    public static FileConfiguration config = new YamlConfiguration();
+    int await = 5;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         Bukkit.getPluginManager().registerEvents(new PlayerLogoutListener(), this);
+        try {
+            config.load(this.getDataFolder() + "/config");
+            await = config.getInt("await");
+        }
+        catch (Exception exception) {
+            config.set("await", 5);
+            await = 5;
+            try {
+                config.save(this.getDataFolder() + "/config");
+            }
+            catch (Exception ex) {
+                getLogger().log(Level.WARNING, ex.toString());
+            }
+        }
+        getLogger().log(Level.INFO, "Await set as" + Integer.toString(await));
     }
-
-    public static ArrayList<String[]> req = new ArrayList<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
@@ -32,8 +52,13 @@ public final class SimpleTeleport extends JavaPlugin {
             Player target = getServer().getPlayer(args[0]);
             if (target == null)
                 return false;
-            req.add(new String[]{player.getName(), target.getName()});
+            String[] pair = new String[]{player.getName(), target.getName()};
+            req.add(pair);
             target.sendMessage(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " wants to teleport to your location");
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+                req.remove(pair);
+                player.sendMessage(ChatColor.YELLOW + "Your request was denied because of it takes too long time to respond.");
+            }, (long)await * 60 * 20);
             return true;
         }
         if (command.getName().equalsIgnoreCase("tpacc")) {
