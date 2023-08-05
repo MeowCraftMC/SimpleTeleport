@@ -1,0 +1,12 @@
+name: SimpleTeleport
+version: '${version}'
+main: io.github.elihuso.simpleteleport.SimpleTeleport
+api-version: '1.16'
+
+commands:
+  tpa:
+    permission: simpleteleport.tpa
+  tpacc:
+    permission: simpleteleport.tpacc
+  tpdn:
+    permission: simpleteleport.tpdn
