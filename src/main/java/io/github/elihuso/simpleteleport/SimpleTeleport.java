@@ -90,30 +90,60 @@ public final class SimpleTeleport extends JavaPlugin {
         }
         if (command.getName().equalsIgnoreCase("tpacc")) {
             ArrayList<String[]> buffer = new ArrayList<>();
-            for (String[] v : req) {
-                if (v[1].equalsIgnoreCase(player.getName())) {
-                    Player target = getServer().getPlayer(v[0]);
-                    if (!(target == null)) {
-                        target.teleport(player.getLocation());
-                        target.sendMessage(ChatColor.GREEN + "Teleport to " + ChatColor.WHITE + player.getName());
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 4, true, false, true));
-                        buffer.add(v);
+            if (args.length == 0) {
+                for (String[] v : req) {
+                    if (v[1].equalsIgnoreCase(player.getName())) {
+                        Player target = getServer().getPlayer(v[0]);
+                        if (!(target == null)) {
+                            target.teleport(player.getLocation());
+                            target.sendMessage(ChatColor.GREEN + "Teleport to " + ChatColor.WHITE + player.getName());
+                            target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 4, true, false, true));
+                            buffer.add(v);
+                        }
                     }
                 }
+            }
+            else {
+                Player target = getServer().getPlayer(args[0]);
+                if (target == null)
+                    return false;
+                for (String[] v : req) {
+                    if (v[0].equalsIgnoreCase(target.getName()) && v[1].equalsIgnoreCase(player.getName()))
+                        buffer.add(v);
+                }
+                if (buffer.isEmpty())
+                    return false;
+                target.teleport(player.getLocation());
+                target.sendMessage(ChatColor.GREEN + "Teleport to " + ChatColor.WHITE + player.getName());
+                target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 4, true, false, true));
             }
             req.removeAll(buffer);
             return true;
         }
         if (command.getName().equalsIgnoreCase("tpdn")) {
             ArrayList<String[]> buffer = new ArrayList<>();
-            for (String[] v : req) {
-                if (v[1].equalsIgnoreCase(player.getName())) {
-                    Player target = getServer().getPlayer(v[0]);
-                    if (!(target == null)) {
-                        target.sendMessage(ChatColor.RED + "Teleport request denied by " + ChatColor.WHITE + player.getName());
-                        buffer.add(v);
+            if (args.length == 0) {
+                for (String[] v : req) {
+                    if (v[1].equalsIgnoreCase(player.getName())) {
+                        Player target = getServer().getPlayer(v[0]);
+                        if (!(target == null)) {
+                            target.sendMessage(ChatColor.RED + "Teleport request denied by " + ChatColor.WHITE + player.getName());
+                            buffer.add(v);
+                        }
                     }
                 }
+            }
+            else {
+                Player target = getServer().getPlayer(args[0]);
+                if (target == null)
+                    return false;
+                for (String[] v : req) {
+                    if (v[0].equalsIgnoreCase(target.getName()) && v[1].equalsIgnoreCase(player.getName()))
+                        buffer.add(v);
+                }
+                if (buffer.isEmpty())
+                    return false;
+                target.sendMessage(ChatColor.RED + "Teleport request denied by " + ChatColor.WHITE + player.getName());
             }
             req.removeAll(buffer);
             return true;
