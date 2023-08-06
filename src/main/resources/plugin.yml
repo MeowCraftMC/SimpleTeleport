@@ -6,9 +6,13 @@ api-version: '1.16'
 commands:
   tpa:
     permission: simpleteleport.tpa
+    default-permission: true
   tpcancel:
     permission: simpleteleport.tpcancel
+    default-permission: true
   tpacc:
     permission: simpleteleport.tpacc
+    default-permission: true
   tpdn:
     permission: simpleteleport.tpdn
+    default-permission: true
