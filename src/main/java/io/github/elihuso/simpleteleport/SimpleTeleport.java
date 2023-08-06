@@ -58,8 +58,10 @@ public final class SimpleTeleport extends JavaPlugin {
             req.add(pair);
             target.sendMessage(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " wants to teleport to your location");
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
-                req.remove(pair);
-                player.sendMessage(ChatColor.YELLOW + "Your request was denied because of it takes too long time to respond.");
+                if (req.contains(pair)){
+                    req.remove(pair);
+                    player.sendMessage(ChatColor.YELLOW + "Your request was denied because of it takes too long time to respond.");
+                }
             }, (long)await * 60 * 20);
             return true;
         }
