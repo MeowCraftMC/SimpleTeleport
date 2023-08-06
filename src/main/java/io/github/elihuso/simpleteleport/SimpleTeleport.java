@@ -96,7 +96,7 @@ public final class SimpleTeleport extends JavaPlugin {
                     if (!(target == null)) {
                         target.teleport(player.getLocation());
                         target.sendMessage(ChatColor.GREEN + "Teleport to " + ChatColor.WHITE + player.getName());
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 900, 4, true, false, true));
+                        target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 4, true, false, true));
                         buffer.add(v);
                     }
                 }
