@@ -17,6 +17,10 @@ commands:
   tprandom:
     permission: simpleteleport.tprandom
     aliases: [tpr]
+  tp2p:
+    permission: simpleteleport.tp2p
+  🍥:
+    permission: simpleteleport.🍥
 
 permissions:
   simpleteleport.tpa:
@@ -26,4 +30,10 @@ permissions:
   simpleteleport.tpacc:
     default: true
   simpleteleport.tpdn:
+    default: true
+  simpleteleport.tprandom:
+    default: false
+  simpleteleport.tp2p:
+    default: false
+  simpleteleport.🍥:
     default: true

@@ -163,6 +163,30 @@ public final class SimpleTeleport extends JavaPlugin {
             while (player.getWorld().getBlockAt((int)x, (int)--y, (int)z).getType().isAir());
             location.setY(y + 2);
             player.teleport(location);
+            return true;
+        }
+        if (command.getName().equalsIgnoreCase("tp2p")) {
+            if (args.length == 0)
+                return false;
+            if (args.length == 1) {
+                Player target = getServer().getPlayer(args[0]);
+                if (target == null)
+                    return false;
+                player.teleport(target.getLocation());
+                return true;
+            }
+            else {
+                Player from = getServer().getPlayer(args[0]);
+                Player to = getServer().getPlayer(args[1]);
+                if ((from == null) || (to == null))
+                    return false;
+                from.teleport(to.getLocation());
+                return true;
+            }
+        }
+        if (command.getName().equalsIgnoreCase("🍥")) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 5, false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 200, 19, false, false, false));
         }
         return false;
     }
