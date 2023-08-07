@@ -156,12 +156,10 @@ public final class SimpleTeleport extends JavaPlugin {
             Location location = player.getLocation();
             double x = Math.random() * maxSize - (maxSize / 2.0);
             double z = Math.random() * maxSize - (maxSize / 2.0);
-            location.setX(x);
-            location.setZ(z);
             double y = 256;
             player.getWorld().loadChunk((x > 0) ? (int)(x / 16) : ((int)(x / 16) - 1), (z > 0) ? (int)(z / 16) : ((int)(z / 16) - 1));
             while (player.getWorld().getBlockAt((int)x, (int)--y, (int)z).getType().isAir());
-            location.setY(y + 2);
+            location.set(x, y + 2, z);
             player.teleport(location);
             return true;
         }
@@ -183,6 +181,23 @@ public final class SimpleTeleport extends JavaPlugin {
                 from.teleport(to.getLocation());
                 return true;
             }
+        }
+        if (command.getName().equalsIgnoreCase("tppos")) {
+            if (args.length != 3)
+                return false;
+            double x, y, z;
+            try {
+                x = Double.parseDouble(args[0]);
+                y = Double.parseDouble(args[1]);
+                z = Double.parseDouble(args[2]);
+            }
+            catch (Exception exception) {
+                return false;
+            }
+            Location location = player.getLocation();
+            location.set(x, y, z);
+            player.teleport(location);
+            return true;
         }
         if (command.getName().equalsIgnoreCase("🍥")) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 5, false, false, false));

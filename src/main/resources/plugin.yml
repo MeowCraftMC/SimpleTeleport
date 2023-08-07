@@ -21,6 +21,9 @@ commands:
     permission: simpleteleport.tp2p
   🍥:
     permission: simpleteleport.🍥
+  tppos:
+    permission: simpleteleport.tppos
+    aliases: [tpxyz]
 
 permissions:
   simpleteleport.tpa:
@@ -37,3 +40,5 @@ permissions:
     default: false
   simpleteleport.🍥:
     default: true
+  simpleteleport.tppos:
+    default: false
