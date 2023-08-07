@@ -10,8 +10,13 @@ commands:
     permission: simpleteleport.tpcancel
   tpacc:
     permission: simpleteleport.tpacc
+    aliases: [tpaccept]
   tpdn:
     permission: simpleteleport.tpdn
+    aliases: [tpdeny]
+  tprandom:
+    permission: simpleteleport.tprandom
+    aliases: [tpr]
 
 permissions:
   simpleteleport.tpa:

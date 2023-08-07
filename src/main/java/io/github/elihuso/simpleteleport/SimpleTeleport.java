@@ -3,6 +3,7 @@ package io.github.elihuso.simpleteleport;
 import io.github.elihuso.simpleteleport.listener.PlayerLogoutListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,7 +15,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
+import java.lang.Math.*;
 
 public final class SimpleTeleport extends JavaPlugin {
 
@@ -147,6 +150,19 @@ public final class SimpleTeleport extends JavaPlugin {
             }
             req.removeAll(buffer);
             return true;
+        }
+        if (command.getName().equalsIgnoreCase("tprandom")) {
+            int maxSize = Bukkit.getMaxWorldSize();
+            Location location = player.getLocation();
+            double x = Math.random() * maxSize - (maxSize / 2.0);
+            double z = Math.random() * maxSize - (maxSize / 2.0);
+            location.setX(x);
+            location.setZ(z);
+            double y = 256;
+            player.getWorld().loadChunk((x > 0) ? (int)(x / 16) : ((int)(x / 16) - 1), (z > 0) ? (int)(z / 16) : ((int)(z / 16) - 1));
+            while (player.getWorld().getBlockAt((int)x, (int)--y, (int)z).getType().isAir());
+            location.setY(y + 2);
+            player.teleport(location);
         }
         return false;
     }
