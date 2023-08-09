@@ -23,7 +23,7 @@ commands:
     permission: simpleteleport.🍥
   tppos:
     permission: simpleteleport.tppos
-    aliases: [tpxyz]
+    aliases: [tpxyz, tpposition]
 
 permissions:
   simpleteleport.tpa:

@@ -15,9 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.logging.Level;
-import java.lang.Math.*;
 
 public final class SimpleTeleport extends JavaPlugin {
 
@@ -158,7 +156,7 @@ public final class SimpleTeleport extends JavaPlugin {
             double z = Math.random() * maxSize - (maxSize / 2.0);
             double y = 256;
             player.getWorld().loadChunk((x > 0) ? (int)(x / 16) : ((int)(x / 16) - 1), (z > 0) ? (int)(z / 16) : ((int)(z / 16) - 1));
-            while (player.getWorld().getBlockAt((int)x, (int)--y, (int)z).getType().isAir());
+            while (player.getWorld().getBlockAt((int)x, (int)--y, (int)z).getType().isAir() && (y > 0));
             location.set(x, y + 2, z);
             player.teleport(location);
             return true;
