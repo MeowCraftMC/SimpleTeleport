@@ -30,14 +30,12 @@ public final class SimpleTeleport extends JavaPlugin {
         try {
             config.load(this.getDataFolder() + "/config");
             await = config.getInt("await");
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             config.set("await", 5);
             await = 5;
             try {
                 config.save(this.getDataFolder() + "/config");
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 getLogger().log(Level.WARNING, ex.toString());
             }
         }
@@ -48,7 +46,7 @@ public final class SimpleTeleport extends JavaPlugin {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
         if (!(sender instanceof Player))
             return false;
-        Player player = (Player)sender;
+        Player player = (Player) sender;
         if (command.getName().equalsIgnoreCase("tpa")) {
             if (args.length == 0)
                 return false;
@@ -59,11 +57,11 @@ public final class SimpleTeleport extends JavaPlugin {
             req.add(pair);
             target.sendMessage(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " wants to teleport to your location");
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
-                if (req.contains(pair)){
+                if (req.contains(pair)) {
                     req.remove(pair);
                     player.sendMessage(ChatColor.YELLOW + "Your request was denied because of it takes too long time to respond.");
                 }
-            }, (long)await * 60 * 20);
+            }, (long) await * 60 * 20);
             return true;
         }
         if (command.getName().equalsIgnoreCase("tpcancel")) {
@@ -155,8 +153,8 @@ public final class SimpleTeleport extends JavaPlugin {
             double x = Math.random() * maxSize - (maxSize / 2.0);
             double z = Math.random() * maxSize - (maxSize / 2.0);
             double y = 256;
-            player.getWorld().loadChunk((x > 0) ? (int)(x / 16) : ((int)(x / 16) - 1), (z > 0) ? (int)(z / 16) : ((int)(z / 16) - 1));
-            while (player.getWorld().getBlockAt((int)x, (int)--y, (int)z).getType().isAir() && (y > 0));
+            player.getWorld().loadChunk((x > 0) ? (int) (x / 16) : ((int) (x / 16) - 1), (z > 0) ? (int) (z / 16) : ((int) (z / 16) - 1));
+            while (player.getWorld().getBlockAt((int) x, (int) --y, (int) z).getType().isAir() && (y > 0)) ;
             location.set(x, y + 2, z);
             player.teleport(location);
             return true;
@@ -188,8 +186,7 @@ public final class SimpleTeleport extends JavaPlugin {
                 x = Double.parseDouble(args[0]);
                 y = Double.parseDouble(args[1]);
                 z = Double.parseDouble(args[2]);
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 return false;
             }
             Location location = player.getLocation();
@@ -203,6 +200,7 @@ public final class SimpleTeleport extends JavaPlugin {
         }
         return false;
     }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic
