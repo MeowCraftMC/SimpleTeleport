@@ -24,6 +24,8 @@ commands:
   tppos:
     permission: simpleteleport.tppos
     aliases: [tpxyz, tpposition]
+  spawn:
+    permission: simpleteleport.spawn
 
 permissions:
   simpleteleport.tpa:
@@ -42,3 +44,5 @@ permissions:
     default: true
   simpleteleport.tppos:
     default: false
+  simpleteleport.spawn:
+    default: true

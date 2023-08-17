@@ -194,6 +194,9 @@ public final class SimpleTeleport extends JavaPlugin {
             player.teleport(location);
             return true;
         }
+        if (command.getName().equalsIgnoreCase("spawn")) {
+            player.teleport(player.getWorld().getSpawnLocation());
+        }
         if (command.getName().equalsIgnoreCase("🍥")) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 5, false, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 200, 19, false, false, false));
