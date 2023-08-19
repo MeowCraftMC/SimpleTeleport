@@ -200,13 +200,14 @@ public final class SimpleTeleport extends JavaPlugin {
         if (command.getName().equalsIgnoreCase("top")) {
             Location location = player.getLocation();
             int y = 255;
-            while (player.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ()).getType().isAir()) ;
-            location.setY(y);
+            while (player.getWorld().getBlockAt(location.getBlockX(), y--, location.getBlockZ()).getType().isAir()) ;
+            location.setY(y + 2);
             player.teleport(location);
         }
         if (command.getName().equalsIgnoreCase("bottom")) {
             Location location = player.getLocation();
-            while (player.getWorld().getBlockAt(location).getType().isAir()) {
+            location.setY(location.getY() - 2);
+            while (!player.getWorld().getBlockAt(location).getType().isAir()) {
                 location.setY(location.getY() - 1);
             }
             location.setY(location.getY() - 2);
