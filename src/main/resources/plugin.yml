@@ -30,6 +30,8 @@ commands:
     permission: simpleteleport.top
   bottom:
     permission: simpleteleport.bottom
+  world:
+    permission: simpleteleport.world
 
 permissions:
   simpleteleport.tpa:
@@ -53,4 +55,6 @@ permissions:
   simpleteleport.top:
     default: true
   simpleteleport.bottom:
-    default: true
+    default: false
+  simpleteleport.world:
+    default: false

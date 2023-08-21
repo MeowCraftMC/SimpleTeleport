@@ -4,6 +4,7 @@ import io.github.elihuso.simpleteleport.listener.PlayerLogoutListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 public final class SimpleTeleport extends JavaPlugin {
@@ -59,7 +61,7 @@ public final class SimpleTeleport extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
                 if (req.contains(pair)) {
                     req.remove(pair);
-                    player.sendMessage(ChatColor.YELLOW + "Your request was denied because of it takes too long time to respond.");
+                    player.sendMessage(ChatColor.YELLOW + "Your request has been denied because it takes too long time to respond.");
                 }
             }, (long) await * 60 * 20);
             return true;
@@ -212,6 +214,18 @@ public final class SimpleTeleport extends JavaPlugin {
             }
             location.setY(location.getY() - 2);
             player.teleport(location);
+        }
+        if (command.getName().equalsIgnoreCase("world")) {
+            World[] worlds = getServer().getWorlds().toArray(World[]::new);
+            World playerWorld = player.getWorld();
+            for (int i = 0; i < worlds.length; i++) {
+                if (playerWorld.equals(worlds[i])) {
+                    if (i == worlds.length - 1)
+                        player.teleport(worlds[0].getSpawnLocation());
+                    else
+                        player.teleport(worlds[i + 1].getSpawnLocation());
+                }
+            }
         }
         if (command.getName().equalsIgnoreCase("🍥")) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 5, false, false, false));
