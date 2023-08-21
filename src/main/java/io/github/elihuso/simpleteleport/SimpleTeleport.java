@@ -153,14 +153,26 @@ public final class SimpleTeleport extends JavaPlugin {
         }
         if (command.getName().equalsIgnoreCase("tprandom")) {
             int maxSize = Bukkit.getMaxWorldSize();
-            Location location = player.getLocation();
             double x = Math.random() * maxSize - (maxSize / 2.0);
             double z = Math.random() * maxSize - (maxSize / 2.0);
             double y = 256;
-            player.getWorld().loadChunk((x > 0) ? (int) (x / 16) : ((int) (x / 16) - 1), (z > 0) ? (int) (z / 16) : ((int) (z / 16) - 1));
-            while (player.getWorld().getBlockAt((int) x, (int) --y, (int) z).getType().isAir() && (y > 0)) ;
-            location.set(x, y + 2, z);
-            player.teleport(location);
+            if (args.length == 0) {
+                Location location = player.getLocation();
+                player.getWorld().loadChunk((x > 0) ? (int) (x / 16) : ((int) (x / 16) - 1), (z > 0) ? (int) (z / 16) : ((int) (z / 16) - 1));
+                while (player.getWorld().getBlockAt((int) x, (int) --y, (int) z).getType().isAir() && (y > 0)) ;
+                location.set(x, y + 2, z);
+                player.teleport(location);
+            }
+            else {
+                Player target = getServer().getPlayer(args[0]);
+                if (target == null)
+                    return false;
+                Location location = target.getLocation();
+                target.getWorld().loadChunk((x > 0) ? (int) (x / 16) : ((int) (x / 16) - 1), (z > 0) ? (int) (z / 16) : ((int) (z / 16) - 1));
+                while (target.getWorld().getBlockAt((int) x, (int) --y, (int) z).getType().isAir() && (y > 0)) ;
+                location.set(x, y + 2, z);
+                target.teleport(location);
+            }
             return true;
         }
         if (command.getName().equalsIgnoreCase("tp2p")) {
