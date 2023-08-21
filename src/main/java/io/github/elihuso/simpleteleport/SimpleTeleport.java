@@ -133,6 +133,7 @@ public final class SimpleTeleport extends JavaPlugin {
                         }
                     }
                 }
+                player.sendMessage(ChatColor.LIGHT_PURPLE + "All request has been denied by you.");
             }
             else {
                 Player target = getServer().getPlayer(args[0]);
@@ -145,6 +146,7 @@ public final class SimpleTeleport extends JavaPlugin {
                 if (buffer.isEmpty())
                     return false;
                 target.sendMessage(ChatColor.RED + "Teleport request denied by " + ChatColor.WHITE + player.getName());
+                player.sendMessage(ChatColor.LIGHT_PURPLE + "All request from " + ChatColor.WHITE + target.getName() + ChatColor.LIGHT_PURPLE + " has been denied by you.");
             }
             req.removeAll(buffer);
             return true;
