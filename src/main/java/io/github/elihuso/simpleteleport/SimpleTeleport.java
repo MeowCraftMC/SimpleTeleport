@@ -16,12 +16,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public final class SimpleTeleport extends JavaPlugin {
 
     public static ArrayList<String[]> req = new ArrayList<>();
+    public static ArrayList<UUID> progynova = new ArrayList<>();
     public static FileConfiguration config = new YamlConfiguration();
     int await = 5;
 
@@ -242,8 +243,28 @@ public final class SimpleTeleport extends JavaPlugin {
             }
         }
         if (command.getName().equalsIgnoreCase("🍥")) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 5, false, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 200, 19, false, false, false));
+            if (progynova.contains(player.getUniqueId())) {
+                player.sendMessage(ChatColor.RED + "请等一会再来w~");
+                return true;
+            }
+            if (args.length == 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 5, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 200, 19, false, false, false));
+                player.sendMessage(ChatColor.AQUA + "你吃掉了一颗补子!");
+            }
+            else {
+                Player target = getServer().getPlayer(args[0]);
+                if (target == null)
+                    return false;
+                target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 5, false, false, false));
+                target.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 200, 19, false, false, false));
+                target.sendMessage(ChatColor.WHITE + player.getName() + ChatColor.AQUA + "喂给你了一颗补子!");
+            }
+            progynova.add(player.getUniqueId());
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+                progynova.remove(player.getUniqueId());
+            }, (long) await * 60 * 20);
+            return true;
         }
         return false;
     }
