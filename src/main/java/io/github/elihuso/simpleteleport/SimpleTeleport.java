@@ -59,6 +59,10 @@ public final class SimpleTeleport extends JavaPlugin {
             String[] pair = new String[]{player.getName(), target.getName()};
             req.add(pair);
             target.sendMessage(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " wants to teleport to your location");
+            target.sendMessage(ChatColor.WHITE + "Type " + ChatColor.RED + "/tpacc " + player.getName() + ChatColor.WHITE + " to accept teleport request.");
+            target.sendMessage(ChatColor.WHITE + "Type " + ChatColor.RED + "/tpdn " + player.getName() + ChatColor.WHITE + " to deny teleport request.");
+            target.sendMessage(ChatColor.WHITE + "Type " + ChatColor.RED + "/tpacc" + ChatColor.WHITE + " to accept all teleport request.");
+            target.sendMessage(ChatColor.WHITE + "Type " + ChatColor.RED + "/tpdn" + ChatColor.WHITE + " to deny all teleport request.");
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
                 if (req.contains(pair)) {
                     req.remove(pair);
