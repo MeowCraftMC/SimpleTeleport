@@ -1,5 +1,6 @@
 package io.github.elihuso.simpleteleport;
 
+import io.github.elihuso.simpleteleport.config.ConfigManager;
 import io.github.elihuso.simpleteleport.listener.PlayerLogoutListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,8 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -17,32 +16,23 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public final class SimpleTeleport extends JavaPlugin {
 
     public static ArrayList<String[]> req = new ArrayList<>();
     public static ArrayList<UUID> progynova = new ArrayList<>();
-    public static FileConfiguration config = new YamlConfiguration();
+    private final ConfigManager configManager;
     int await = 5;
+
+    public SimpleTeleport() {
+        configManager = new ConfigManager(this);
+    }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        Bukkit.getPluginManager().registerEvents(new PlayerLogoutListener(), this);
-        try {
-            config.load(this.getDataFolder() + "/config");
-            await = config.getInt("await");
-        } catch (Exception exception) {
-            config.set("await", 5);
-            await = 5;
-            try {
-                config.save(this.getDataFolder() + "/config");
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, ex.toString());
-            }
-        }
-        getLogger().log(Level.INFO, "Await set as" + Integer.toString(await));
+        if (configManager.ListenDeath()) Bukkit.getPluginManager().registerEvents(new PlayerLogoutListener(), this);
+        await = configManager.Await();
     }
 
     @Override
