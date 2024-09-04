@@ -1,8 +1,10 @@
-package io.github.elihuso.simpleteleport.config.data.player;
+package io.github.elihuso.simpleteleport.config.data;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalNotification;
+import io.github.elihuso.simpleteleport.config.data.player.PlayerData;
+import io.github.elihuso.simpleteleport.config.data.player.PlayerDataLoader;
 import org.bukkit.entity.Player;
 import org.slf4j.Logger;
 
@@ -12,14 +14,14 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-public class PlayerDataManager {
+public class DataManager {
 
     private final Logger logger;
 
     private final PlayerDataLoader loader;
     private final LoadingCache<UUID, PlayerData> storage;
 
-    public PlayerDataManager(File dataFolder, Logger logger) {
+    public DataManager(File dataFolder, Logger logger) {
         this.logger = logger;
 
         this.loader = new PlayerDataLoader(new File(dataFolder, "data"), logger);

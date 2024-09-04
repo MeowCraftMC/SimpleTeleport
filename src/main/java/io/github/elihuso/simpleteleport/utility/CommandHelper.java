@@ -7,6 +7,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class CommandHelper {
+    public static boolean ensureAsPlayer(CommandSender sender) {
+        if (sender instanceof Player) {
+            return true;
+        } else {
+            sender.sendMessage(Component.text("Please use this command as a player.").color(NamedTextColor.RED));
+            return false;
+        }
+    }
+
     public static boolean ensureAsPlayer(CommandSender sender, Entity executor) {
         if (executor instanceof Player) {
             return true;

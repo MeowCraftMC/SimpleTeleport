@@ -3,7 +3,8 @@ package io.github.elihuso.simpleteleport;
 public class Constants {
     public static final String PERMISSION_BACK = "simpleteleport.back";
 
-    public static final String PERMISSION_TPA = "simpleteleport.tpa.use";
+    public static final String PERMISSION_TPA_USE = "simpleteleport.tpa.use";
+    public static final String PERMISSION_TPA_HERE = "simpleteleport.tpa.here";
     public static final String PERMISSION_TPA_CANCEL = "simpleteleport.tpa.cancel";
     public static final String PERMISSION_TPA_ACCEPT = "simpleteleport.tpa.accept";
     public static final String PERMISSION_TPA_DENY = "simpleteleport.tpa.deny";

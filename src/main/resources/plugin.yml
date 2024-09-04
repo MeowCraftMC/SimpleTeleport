@@ -39,10 +39,11 @@ permissions:
     default: true
 
   simpleteleport.tpa:
-    description: 'Request to teleport to a player'
+    description: 'Request to teleport to a player or to teleport a player to executor'
     default: true
     children:
       simpleteleport.tpa.use: true
+      simpleteleport.tpa.here: true
       simpleteleport.tpa.cancel: true
       simpleteleport.tpa.accept: true
       simpleteleport.tpa.deny: true

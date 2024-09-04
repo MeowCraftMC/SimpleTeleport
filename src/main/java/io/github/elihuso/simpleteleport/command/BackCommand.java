@@ -3,28 +3,27 @@ package io.github.elihuso.simpleteleport.command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.github.elihuso.simpleteleport.Constants;
-import io.github.elihuso.simpleteleport.SimpleTeleport;
+import io.github.elihuso.simpleteleport.config.data.DataManager;
 import io.github.elihuso.simpleteleport.utility.CommandHelper;
 import io.github.elihuso.simpleteleport.utility.TeleportHelper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.entity.TeleportFlag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("UnstableApiUsage")
 public class BackCommand implements ICommand {
 
-    private final SimpleTeleport plugin;
+    private final DataManager dataManager;
 
-    public BackCommand(SimpleTeleport plugin) {
-        this.plugin = plugin;
+    public BackCommand(DataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
+    // Todo: server config to disable
     private final LiteralCommandNode<CommandSourceStack> COMMAND = Commands.literal("back")
-            .requires(r -> r.getExecutor() != null && r.getExecutor().hasPermission(Constants.PERMISSION_BACK))
+            .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_BACK))
             .executes(this::onBack)
             .build();
 
@@ -36,7 +35,8 @@ public class BackCommand implements ICommand {
             return 0;
         }
 
-        var data = plugin.getDataManager().getPlayerData((Player) executor);
+        assert executor != null;
+        var data = dataManager.getPlayerData((Player) executor);
         var location = data.getPreviousLocation();
         if (location == null) {
             source.getSender().sendMessage(Component.text("No previous location recorded.").color(NamedTextColor.RED));
