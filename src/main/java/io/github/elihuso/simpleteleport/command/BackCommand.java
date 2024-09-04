@@ -36,13 +36,17 @@ public class BackCommand implements ICommand {
             return 0;
         }
 
-        var location = plugin.getDataManager().getLocation(executor.getUniqueId());
+        var data = plugin.getDataManager().getPlayerData((Player) executor);
+        var location = data.getPreviousLocation();
         if (location == null) {
-            source.getSender().sendMessage(Component.text("No previous location found.").color(NamedTextColor.RED));
+            source.getSender().sendMessage(Component.text("No previous location recorded.").color(NamedTextColor.RED));
             return 0;
         }
 
-        TeleportHelper.teleportTo(executor, location);
+        if (!TeleportHelper.teleportTo(executor, location)) {
+            source.getSender().sendMessage(Component.text("Teleport failed due to bukkit api limit.").color(NamedTextColor.RED));
+            return 0;
+        }
         return 1;
     }
 

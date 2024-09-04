@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'com.rikonardo.papermake' version '1.0.6'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'io.github.elihuso'
@@ -20,6 +21,9 @@ repositories {
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
+
+    implementation 'org.spongepowered:configurate-yaml:4.1.2'
+    implementation 'org.spongepowered:configurate-gson:4.1.2'
 }
 
 def targetJavaVersion = 21
@@ -38,7 +42,16 @@ processResources {
     def props = [version: version]
     inputs.properties props
     filteringCharset 'UTF-8'
-    filesMatching('paper-plugin.yml') {
+    filesMatching(['plugin.yml', 'paper-plugin.yml']) {
         expand props
     }
+}
+
+jar.dependsOn(shadowJar)
+
+shadowJar {
+    mergeServiceFiles()
+
+    enableRelocation true
+    relocationPrefix 'io.github.elihuso.simpleteleport.libs'
 }

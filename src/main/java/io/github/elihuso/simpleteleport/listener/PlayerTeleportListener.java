@@ -1,6 +1,7 @@
 package io.github.elihuso.simpleteleport.listener;
 
 import io.github.elihuso.simpleteleport.SimpleTeleport;
+import io.github.elihuso.simpleteleport.config.data.enums.TeleportType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -19,20 +20,25 @@ public class PlayerTeleportListener implements Listener {
             return;
         }
 
-        switch (event.getCause()) {
-            case DISMOUNT, EXIT_BED, UNKNOWN, SPECTATE, ENDER_PEARL, CHORUS_FRUIT, NETHER_PORTAL, END_PORTAL, END_GATEWAY:
-                return;
-        }
+        var type = TeleportType.fromBukkit(event.getCause());
 
         var player = event.getPlayer();
         var from = event.getFrom();
-        plugin.getDataManager().saveLocation(player.getUniqueId(), from);
+        var data = plugin.getDataManager().getPlayerData(player);
+        // Todo: defValue from config.
+        if (data.shouldRecordLocation(type, type == TeleportType.SYSTEM)) {
+            plugin.getDataManager().getPlayerData(player).setPreviousLocation(from);
+        }
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         var player = event.getPlayer();
         var location = event.getPlayer().getLocation();
-        plugin.getDataManager().saveLocation(player.getUniqueId(), location);
+        var data = plugin.getDataManager().getPlayerData(player);
+        // Todo: defValue from config.
+        if (data.shouldRecordLocation(TeleportType.DEATH, true)) {
+            plugin.getDataManager().getPlayerData(player).setPreviousLocation(location);
+        }
     }
 }

@@ -1,2 +1,21 @@
-listenDeath: true
-await: 5
+
+back:
+  recording-preference:
+    player-custom: true
+    default:
+      dismount: false
+      exit-bed: false
+      ender-pearl: false
+      chorus-fruit: false
+      nether-portal: false
+      end-portal: false
+      end-gateway: false
+      spectate: false
+      command: true
+      plugin: true
+      unknown: true
+
+
+tpa:
+  # Request timeout in seconds
+  timeout: 30
