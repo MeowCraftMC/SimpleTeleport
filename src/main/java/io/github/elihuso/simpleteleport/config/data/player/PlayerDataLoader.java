@@ -1,4 +1,4 @@
-package io.github.elihuso.simpleteleport.config.data;
+package io.github.elihuso.simpleteleport.config.data.player;
 
 import com.google.common.cache.CacheLoader;
 import org.jetbrains.annotations.NotNull;

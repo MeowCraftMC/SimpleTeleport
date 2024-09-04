@@ -1,4 +1,4 @@
-package io.github.elihuso.simpleteleport.config.data;
+package io.github.elihuso.simpleteleport.config.data.player;
 
 import io.github.elihuso.simpleteleport.config.data.enums.TeleportType;
 import org.bukkit.Location;

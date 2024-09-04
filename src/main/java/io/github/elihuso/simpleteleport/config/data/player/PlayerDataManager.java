@@ -1,9 +1,8 @@
-package io.github.elihuso.simpleteleport.config.data;
+package io.github.elihuso.simpleteleport.config.data.player;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalNotification;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.slf4j.Logger;
 

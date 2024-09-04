@@ -2,7 +2,7 @@ package io.github.elihuso.simpleteleport;
 
 import io.github.elihuso.simpleteleport.command.BackCommand;
 import io.github.elihuso.simpleteleport.config.ConfigManager;
-import io.github.elihuso.simpleteleport.config.data.PlayerDataManager;
+import io.github.elihuso.simpleteleport.config.data.player.PlayerDataManager;
 import io.github.elihuso.simpleteleport.listener.PlayerLogoutListener;
 import io.github.elihuso.simpleteleport.listener.PlayerTeleportListener;
 import io.papermc.paper.command.brigadier.Commands;
@@ -38,7 +38,7 @@ public final class SimpleTeleport extends JavaPlugin {
     public SimpleTeleport() {
         INSTANCE = this;
 
-        dataManager = new PlayerDataManager(this);
+        dataManager = new PlayerDataManager(getDataFolder(), getSLF4JLogger());
 
         configManager = new ConfigManager(this);
     }
