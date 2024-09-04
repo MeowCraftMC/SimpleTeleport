@@ -1,0 +1,4 @@
+name: SimpleTeleport
+version: '${version}'
+main: io.github.elihuso.simpleteleport.SimpleTeleport
+api-version: '1.21.1'

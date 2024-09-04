@@ -1,7 +1,13 @@
 package io.github.elihuso.simpleteleport;
 
+import io.github.elihuso.simpleteleport.command.BackCommand;
 import io.github.elihuso.simpleteleport.config.ConfigManager;
+import io.github.elihuso.simpleteleport.config.data.PlayerDataManager;
 import io.github.elihuso.simpleteleport.listener.PlayerLogoutListener;
+import io.github.elihuso.simpleteleport.listener.PlayerTeleportListener;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.registrar.ReloadableRegistrarEvent;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,7 +23,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class SimpleTeleport extends JavaPlugin {
+
+    private static SimpleTeleport INSTANCE;
+
+    private final PlayerDataManager dataManager;
 
     public static ArrayList<String[]> req = new ArrayList<>();
     public static ArrayList<UUID> progynova = new ArrayList<>();
@@ -25,14 +36,36 @@ public final class SimpleTeleport extends JavaPlugin {
     int await = 5;
 
     public SimpleTeleport() {
+        INSTANCE = this;
+
+        dataManager = new PlayerDataManager(this);
+
         configManager = new ConfigManager(this);
+    }
+
+    public static SimpleTeleport getInstance() {
+        return INSTANCE;
+    }
+
+    public PlayerDataManager getDataManager() {
+        return dataManager;
     }
 
     @Override
     public void onEnable() {
+        var manager = getLifecycleManager();
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, this::registerCommands);
+
+        getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
+
         // Plugin startup logic
         if (configManager.ListenDeath()) Bukkit.getPluginManager().registerEvents(new PlayerLogoutListener(), this);
         await = configManager.Await();
+    }
+
+    private void registerCommands(@NotNull ReloadableRegistrarEvent<Commands> event) {
+        var commands = event.registrar();
+        new BackCommand(this).register(commands);
     }
 
     @Override
@@ -93,7 +126,7 @@ public final class SimpleTeleport extends JavaPlugin {
                         if (!(target == null)) {
                             target.teleport(player.getLocation());
                             target.sendMessage(ChatColor.GREEN + "Teleport to " + ChatColor.WHITE + player.getName());
-                            target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 4, true, false, true));
+                            target.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20, 4, true, false, true));
                             buffer.add(v);
                         }
                     }
@@ -111,7 +144,7 @@ public final class SimpleTeleport extends JavaPlugin {
                     return false;
                 target.teleport(player.getLocation());
                 target.sendMessage(ChatColor.GREEN + "Teleport to " + ChatColor.WHITE + player.getName());
-                target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 4, true, false, true));
+                target.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20, 4, true, false, true));
             }
             req.removeAll(buffer);
             return true;
