@@ -5,18 +5,31 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Setting;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @ConfigSerializable
 public class PlayerData {
 
+    private PlayerDataLoader loader;
+    private UUID uuid;
+
+    @Setting
     @Nullable
     private Location previousLocation;
+    @Setting
     private final Map<TeleportType, Boolean> locationRecordingPreferences = new HashMap<>();
 
-    public PlayerData() {
+    protected void setLoader(PlayerDataLoader loader, UUID uuid) {
+        this.loader = loader;
+        this.uuid = uuid;
+    }
+
+    public void save() {
+        loader.save(uuid, this);
     }
 
     @Nullable

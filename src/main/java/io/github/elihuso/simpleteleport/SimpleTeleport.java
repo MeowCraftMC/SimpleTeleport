@@ -285,6 +285,6 @@ public final class SimpleTeleport extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        dataManager.saveData();
     }
 }

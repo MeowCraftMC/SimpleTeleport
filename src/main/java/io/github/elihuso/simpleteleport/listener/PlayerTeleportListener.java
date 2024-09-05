@@ -28,14 +28,10 @@ public class PlayerTeleportListener implements Listener {
         var type = TeleportType.fromBukkit(event.getCause());
         var data = dataManager.getPlayerData(player);
 
-        if (configManager.getBackPlayerCustomPreference()) {
-            if (data.shouldRecordLocation(type, configManager.getBackPreferenceDefault(type))) {
-                dataManager.getPlayerData(player).setPreviousLocation(location);
-            }
-        } else {
-            if (configManager.getBackPreferenceDefault(type)) {
-                dataManager.getPlayerData(player).setPreviousLocation(location);
-            }
+        if ((configManager.getBackPlayerCustomPreference() && data.shouldRecordLocation(type, configManager.getBackPreferenceDefault(type)))
+                || configManager.getBackPreferenceDefault(type)) {
+            data.setPreviousLocation(location);
+            data.save();
         }
     }
 
@@ -44,15 +40,11 @@ public class PlayerTeleportListener implements Listener {
         var player = event.getPlayer();
         var location = event.getPlayer().getLocation();
         var data = dataManager.getPlayerData(player);
-
-        if (configManager.getBackPlayerCustomPreference()) {
-            if (data.shouldRecordLocation(TeleportType.DEATH, configManager.getBackPreferenceDefault(TeleportType.DEATH))) {
-                dataManager.getPlayerData(player).setPreviousLocation(location);
-            }
-        } else {
-            if (configManager.getBackPreferenceDefault(TeleportType.DEATH)) {
-                dataManager.getPlayerData(player).setPreviousLocation(location);
-            }
+        var type = TeleportType.DEATH;
+        if ((configManager.getBackPlayerCustomPreference() && data.shouldRecordLocation(type, configManager.getBackPreferenceDefault(type)))
+                || configManager.getBackPreferenceDefault(type)) {
+            data.setPreviousLocation(location);
+            data.save();
         }
     }
 }

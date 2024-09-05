@@ -35,6 +35,10 @@ public class DataManager {
         loader.save(Objects.requireNonNull(notification.getKey()), Objects.requireNonNull(notification.getValue()));
     }
 
+    public void saveData() {
+        storage.invalidateAll();
+    }
+
     public PlayerData getPlayerData(Player player) {
         try {
             return storage.get(player.getUniqueId());

@@ -1,10 +1,17 @@
 package io.github.elihuso.simpleteleport.config.data.player;
 
 import com.google.common.cache.CacheLoader;
+import io.github.elihuso.simpleteleport.config.ConfigurationFactory;
+import io.github.elihuso.simpleteleport.config.serializer.LocationSerializer;
+import io.github.elihuso.simpleteleport.config.serializer.WorldSerializer;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
+import org.spongepowered.configurate.objectmapping.ObjectMapper;
+import org.spongepowered.configurate.objectmapping.meta.NodeResolver;
 
 import java.io.File;
 import java.util.HashMap;
@@ -24,6 +31,7 @@ public class PlayerDataLoader extends CacheLoader<UUID, PlayerData> {
 
     private GsonConfigurationLoader getPlayerDataLoader(UUID uuid) {
         return loaders.computeIfAbsent(uuid, u -> GsonConfigurationLoader.builder()
+                .defaultOptions(options -> options.serializers(ConfigurationFactory::registerSerializers))
                 .file(new File(dataDir, u.toString() + ".yml"))
                 .build());
     }
@@ -35,6 +43,7 @@ public class PlayerDataLoader extends CacheLoader<UUID, PlayerData> {
             try {
                 var data = loader.load().get(PlayerData.class);
                 if (data != null) {
+                    data.setLoader(this, key);
                     return data;
                 }
             } catch (ConfigurateException ex) {
