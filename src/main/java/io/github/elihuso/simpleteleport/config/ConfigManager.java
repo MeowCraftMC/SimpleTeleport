@@ -34,7 +34,7 @@ public class ConfigManager {
         };
     }
 
-    public int getTpaTimeout() {
+    public long getTpaTimeout() {
         return config.getInt("tpa.timeout", 30);
     }
 }

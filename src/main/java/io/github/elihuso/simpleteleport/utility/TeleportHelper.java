@@ -22,4 +22,20 @@ public class TeleportHelper {
 
         return entity.teleport(location, TeleportFlag.EntityState.RETAIN_PASSENGERS);
     }
+
+    public static boolean teleportTo(Entity entity, Entity target) {
+        if (entity.isInsideVehicle()) {
+            if (!entity.leaveVehicle()) {
+                return false;
+            }
+        }
+
+        for (var passenger : entity.getPassengers()) {
+            if (!entity.removePassenger(passenger)) {
+                return false;
+            }
+        }
+
+        return entity.teleport(target);
+    }
 }

@@ -2,3 +2,47 @@ name: SimpleTeleport
 version: '${version}'
 main: io.github.elihuso.simpleteleport.SimpleTeleport
 api-version: '1.21.1'
+
+permissions:
+  simpleteleport.back:
+    description: 'Back to your last location'
+    default: true
+
+  simpleteleport.tpa:
+    description: 'Request to teleport to a player or to teleport a player to executor'
+    default: true
+    children:
+      simpleteleport.tpa.use: true
+      simpleteleport.tpa.here: true
+      simpleteleport.tpa.cancel: true
+      simpleteleport.tpa.accept: true
+      simpleteleport.tpa.deny: true
+
+  simpleteleport.tp:
+    description: 'Teleport to specific location in the world'
+    default: true
+    children:
+      simpleteleport.tp.random:
+        default: op
+      simpleteleport.tp.top: true
+      simpleteleport.tp.spawn: true
+      simpleteleport.tp.bed: true
+
+  simpleteleport.home:
+    description: 'Set and teleport to home'
+    default: true
+    children:
+      simpleteleport.home.tp: true
+      simpleteleport.home.set: true
+      simpleteleport.home.del: true
+      simpleteleport.home.list: true
+      simpleteleport.home.bypass_limit:
+        default: op
+
+  simpleteleport.warp:
+    description: 'Public teleportation point manage'
+    default: op
+    children:
+      simpleteleport.warp.tp: true
+      simpleteleport.warp.add: true
+      simpleteleport.warp.remove: true

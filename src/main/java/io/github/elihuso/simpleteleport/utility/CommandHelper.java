@@ -1,7 +1,5 @@
 package io.github.elihuso.simpleteleport.utility;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -11,7 +9,7 @@ public class CommandHelper {
         if (sender instanceof Player) {
             return true;
         } else {
-            sender.sendMessage(Component.text("请以玩家身份运行此命令！").color(NamedTextColor.RED));
+            sender.sendMessage(ComponentHelper.createCommandNotPlayer());
             return false;
         }
     }
@@ -20,8 +18,16 @@ public class CommandHelper {
         if (executor instanceof Player) {
             return true;
         } else {
-            sender.sendMessage(Component.text("请以玩家身份运行此命令！").color(NamedTextColor.RED));
+            sender.sendMessage(ComponentHelper.createCommandNotPlayer());
             return false;
         }
+    }
+
+    public static boolean ensurePlayerOnline(CommandSender sender, Player player) {
+        if (!player.isConnected()) {
+            sender.sendMessage(ComponentHelper.createPlayerOffline());
+            return false;
+        }
+        return true;
     }
 }

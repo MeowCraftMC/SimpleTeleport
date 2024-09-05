@@ -52,7 +52,7 @@ public final class SimpleTeleport extends JavaPlugin {
     private void registerCommands(@NotNull ReloadableRegistrarEvent<Commands> event) {
         var commands = event.registrar();
         new BackCommand(dataManager).register(commands);
-        new TeleportCommand().register(commands);
+        new TeleportCommand(configManager, memoryDataManager).register(commands);
     }
 
 //    @Override

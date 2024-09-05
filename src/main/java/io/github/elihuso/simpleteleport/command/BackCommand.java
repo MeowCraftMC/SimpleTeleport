@@ -5,11 +5,10 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.github.elihuso.simpleteleport.Constants;
 import io.github.elihuso.simpleteleport.config.data.DataManager;
 import io.github.elihuso.simpleteleport.utility.CommandHelper;
+import io.github.elihuso.simpleteleport.utility.ComponentHelper;
 import io.github.elihuso.simpleteleport.utility.TeleportHelper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -21,7 +20,6 @@ public class BackCommand implements ICommand {
         this.dataManager = dataManager;
     }
 
-    // Todo: server config to disable
     private final LiteralCommandNode<CommandSourceStack> COMMAND = Commands.literal("back")
             .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_BACK))
             .executes(this::onBack)
@@ -39,16 +37,16 @@ public class BackCommand implements ICommand {
         var data = dataManager.getPlayerData((Player) executor);
         var location = data.getPreviousLocation();
         if (location == null) {
-            source.getSender().sendMessage(Component.text("还没有记录到可以返回的位置！").color(NamedTextColor.RED));
+            source.getSender().sendMessage(ComponentHelper.createNoBackPoint());
             return 0;
         }
 
         if (!TeleportHelper.teleportTo(executor, location)) {
-            source.getSender().sendMessage(Component.text("由于 Bukkit API 的限制导致传送失败了！").color(NamedTextColor.RED));
+            source.getSender().sendMessage(ComponentHelper.createTeleportFailed());
             return 0;
         }
 
-        source.getSender().sendMessage(Component.text("Wooah~").color(NamedTextColor.GREEN));
+        source.getSender().sendMessage(ComponentHelper.createBackSuccessful());
         return 1;
     }
 
