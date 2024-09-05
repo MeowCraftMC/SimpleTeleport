@@ -12,12 +12,12 @@ public class PlayerLogoutListener implements Listener {
 
     @EventHandler
     public void onPlayerLogout(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        ArrayList<String[]> buffer = new ArrayList<>();
-        for (String[] v : SimpleTeleport.req) {
-            if ((v[0].equalsIgnoreCase(player.getName())) || (v[1].equalsIgnoreCase(player.getName())))
-                buffer.add(v);
-        }
-        SimpleTeleport.req.removeAll(buffer);
+//        Player player = event.getPlayer();
+//        ArrayList<String[]> buffer = new ArrayList<>();
+//        for (String[] v : SimpleTeleport.req) {
+//            if ((v[0].equalsIgnoreCase(player.getName())) || (v[1].equalsIgnoreCase(player.getName())))
+//                buffer.add(v);
+//        }
+//        SimpleTeleport.req.removeAll(buffer);
     }
 }

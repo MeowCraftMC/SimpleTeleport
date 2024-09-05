@@ -1,5 +1,6 @@
 package io.github.elihuso.simpleteleport.command;
 
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.github.elihuso.simpleteleport.Constants;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -14,8 +15,10 @@ public class TeleportCommand implements ICommand {
     private final LiteralCommandNode<CommandSourceStack> TPA = Commands.literal("tpa")
             .then(Commands.argument("target", ArgumentTypes.player())
                     .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_USE))
+                    .executes(this::onTpa)
             )
             .build();
+
     private final LiteralCommandNode<CommandSourceStack> TP_HERE = Commands.literal("tphere")
             .then(Commands.argument("target", ArgumentTypes.player())
                     .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_HERE))
@@ -46,4 +49,11 @@ public class TeleportCommand implements ICommand {
         registrar.register(TP_ACCEPT, List.of("tpacc"));
         registrar.register(TP_DENY, List.of("tpdn"));
     }
+
+    private int onTpa(CommandContext<CommandSourceStack> context) {
+
+
+        return 0;
+    }
+
 }
