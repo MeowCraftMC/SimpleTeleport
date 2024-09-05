@@ -39,14 +39,16 @@ public class BackCommand implements ICommand {
         var data = dataManager.getPlayerData((Player) executor);
         var location = data.getPreviousLocation();
         if (location == null) {
-            source.getSender().sendMessage(Component.text("No previous location recorded.").color(NamedTextColor.RED));
+            source.getSender().sendMessage(Component.text("还没有记录到可以返回的位置！").color(NamedTextColor.RED));
             return 0;
         }
 
         if (!TeleportHelper.teleportTo(executor, location)) {
-            source.getSender().sendMessage(Component.text("Teleport failed due to bukkit api limit.").color(NamedTextColor.RED));
+            source.getSender().sendMessage(Component.text("由于 Bukkit API 的限制导致传送失败了！").color(NamedTextColor.RED));
             return 0;
         }
+
+        source.getSender().sendMessage(Component.text("Wooah~").color(NamedTextColor.GREEN));
         return 1;
     }
 

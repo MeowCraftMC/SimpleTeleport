@@ -11,7 +11,7 @@ public class CommandHelper {
         if (sender instanceof Player) {
             return true;
         } else {
-            sender.sendMessage(Component.text("Please use this command as a player.").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("请以玩家身份运行此命令！").color(NamedTextColor.RED));
             return false;
         }
     }
@@ -20,7 +20,7 @@ public class CommandHelper {
         if (executor instanceof Player) {
             return true;
         } else {
-            sender.sendMessage(Component.text("Please use this command as a player.").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("请以玩家身份运行此命令！").color(NamedTextColor.RED));
             return false;
         }
     }

@@ -11,7 +11,6 @@ import java.util.List;
 @SuppressWarnings("UnstableApiUsage")
 public class TeleportCommand implements ICommand {
 
-    // Todo: server config to disable
     private final LiteralCommandNode<CommandSourceStack> TPA = Commands.literal("tpa")
             .then(Commands.argument("target", ArgumentTypes.player())
                     .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_USE))
