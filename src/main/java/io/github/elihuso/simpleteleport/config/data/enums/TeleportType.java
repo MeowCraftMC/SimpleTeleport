@@ -9,7 +9,7 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.*;
 public enum TeleportType {
     GAME_PLAY(List.of(DISMOUNT, EXIT_BED, SPECTATE)),
     ENDER_TELEPORT(List.of(ENDER_PEARL, CHORUS_FRUIT)),
-    PORTAL(List.of(NETHER_PORTAL, END_PORTAL, END_GATEWAY)),
+    PORTALS(List.of(NETHER_PORTAL, END_PORTAL, END_GATEWAY)),
     DEATH(List.of()),
     SYSTEM(List.of(COMMAND, PLUGIN)),
     OTHER(List.of(UNKNOWN));
@@ -28,7 +28,7 @@ public enum TeleportType {
         return switch (cause) {
             case DISMOUNT, EXIT_BED, SPECTATE -> GAME_PLAY;
             case ENDER_PEARL, CHORUS_FRUIT -> ENDER_TELEPORT;
-            case NETHER_PORTAL, END_PORTAL, END_GATEWAY -> PORTAL;
+            case NETHER_PORTAL, END_PORTAL, END_GATEWAY -> PORTALS;
             case COMMAND, PLUGIN -> SYSTEM;
             case UNKNOWN -> OTHER;
         };

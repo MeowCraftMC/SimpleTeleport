@@ -1,20 +1,13 @@
-
 back:
   recording-preference:
     player-custom: true
     default:
-      dismount: false
-      exit-bed: false
-      ender-pearl: false
-      chorus-fruit: false
-      nether-portal: false
-      end-portal: false
-      end-gateway: false
-      spectate: false
-      command: true
-      plugin: true
-      unknown: true
-
+      game-play: false
+      ender-teleport: false
+      portals: false
+      death: true
+      system: true
+      other: false
 
 tpa:
   # Request timeout in seconds

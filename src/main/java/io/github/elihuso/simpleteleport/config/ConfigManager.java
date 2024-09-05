@@ -1,5 +1,6 @@
 package io.github.elihuso.simpleteleport.config;
 
+import io.github.elihuso.simpleteleport.config.data.enums.TeleportType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -12,11 +13,28 @@ public class ConfigManager {
         config = plugin.getConfig();
     }
 
-    public boolean ListenDeath() {
-        return config.getBoolean("listenDeath", true);
+    public boolean getBackPlayerCustomPreference() {
+        return config.getBoolean("back.recording-preference.player-custom", true);
     }
 
-    public int Await() {
-        return config.getInt("await", 5);
+    public boolean getBackPreferenceDefault(TeleportType type) {
+        return switch (type) {
+            case GAME_PLAY:
+                yield config.getBoolean("back.recording-preference.default.game-play", false);
+            case ENDER_TELEPORT:
+                yield config.getBoolean("back.recording-preference.default.ender-teleport", false);
+            case PORTALS:
+                yield config.getBoolean("back.recording-preference.default.portals", false);
+            case DEATH:
+                yield config.getBoolean("back.recording-preference.default.death", true);
+            case SYSTEM:
+                yield config.getBoolean("back.recording-preference.default.system", true);
+            case OTHER:
+                yield config.getBoolean("back.recording-preference.default.other", false);
+        };
+    }
+
+    public int getTpaTimeout() {
+        return config.getInt("tpa.timeout", 30);
     }
 }

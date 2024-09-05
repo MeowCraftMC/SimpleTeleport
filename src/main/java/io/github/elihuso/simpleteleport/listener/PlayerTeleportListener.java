@@ -1,6 +1,7 @@
 package io.github.elihuso.simpleteleport.listener;
 
-import io.github.elihuso.simpleteleport.SimpleTeleport;
+import io.github.elihuso.simpleteleport.config.ConfigManager;
+import io.github.elihuso.simpleteleport.config.data.DataManager;
 import io.github.elihuso.simpleteleport.config.data.enums.TeleportType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,10 +9,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerTeleportListener implements Listener {
-    private final SimpleTeleport plugin;
+    private final ConfigManager configManager;
+    private final DataManager dataManager;
 
-    public PlayerTeleportListener(SimpleTeleport plugin) {
-        this.plugin = plugin;
+    public PlayerTeleportListener(ConfigManager configManager, DataManager dataManager) {
+        this.configManager = configManager;
+        this.dataManager = dataManager;
     }
 
     @EventHandler
@@ -20,14 +23,19 @@ public class PlayerTeleportListener implements Listener {
             return;
         }
 
-        var type = TeleportType.fromBukkit(event.getCause());
-
         var player = event.getPlayer();
-        var from = event.getFrom();
-        var data = plugin.getDataManager().getPlayerData(player);
-        // Todo: defValue from config.
-        if (data.shouldRecordLocation(type, type == TeleportType.SYSTEM)) {
-            plugin.getDataManager().getPlayerData(player).setPreviousLocation(from);
+        var location = event.getFrom();
+        var type = TeleportType.fromBukkit(event.getCause());
+        var data = dataManager.getPlayerData(player);
+
+        if (configManager.getBackPlayerCustomPreference()) {
+            if (data.shouldRecordLocation(type, configManager.getBackPreferenceDefault(type))) {
+                dataManager.getPlayerData(player).setPreviousLocation(location);
+            }
+        } else {
+            if (configManager.getBackPreferenceDefault(type)) {
+                dataManager.getPlayerData(player).setPreviousLocation(location);
+            }
         }
     }
 
@@ -35,10 +43,16 @@ public class PlayerTeleportListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         var player = event.getPlayer();
         var location = event.getPlayer().getLocation();
-        var data = plugin.getDataManager().getPlayerData(player);
-        // Todo: defValue from config.
-        if (data.shouldRecordLocation(TeleportType.DEATH, true)) {
-            plugin.getDataManager().getPlayerData(player).setPreviousLocation(location);
+        var data = dataManager.getPlayerData(player);
+
+        if (configManager.getBackPlayerCustomPreference()) {
+            if (data.shouldRecordLocation(TeleportType.DEATH, configManager.getBackPreferenceDefault(TeleportType.DEATH))) {
+                dataManager.getPlayerData(player).setPreviousLocation(location);
+            }
+        } else {
+            if (configManager.getBackPreferenceDefault(TeleportType.DEATH)) {
+                dataManager.getPlayerData(player).setPreviousLocation(location);
+            }
         }
     }
 }
