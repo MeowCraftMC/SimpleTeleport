@@ -1,9 +1,13 @@
 package io.github.elihuso.simpleteleport.command;
 
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.github.elihuso.simpleteleport.Constants;
+import io.github.elihuso.simpleteleport.command.arguments.EnumArgumentType;
+import io.github.elihuso.simpleteleport.config.ConfigManager;
 import io.github.elihuso.simpleteleport.config.data.DataManager;
+import io.github.elihuso.simpleteleport.config.data.enums.TeleportType;
 import io.github.elihuso.simpleteleport.utility.CommandHelper;
 import io.github.elihuso.simpleteleport.utility.ComponentHelper;
 import io.github.elihuso.simpleteleport.utility.TeleportHelper;
@@ -14,16 +18,48 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("UnstableApiUsage")
 public class BackCommand implements ICommand {
 
+    private final ConfigManager configManager;
     private final DataManager dataManager;
 
-    public BackCommand(DataManager dataManager) {
+    private final LiteralCommandNode<CommandSourceStack> command;
+
+    public BackCommand(ConfigManager configManager, DataManager dataManager) {
+        this.configManager = configManager;
         this.dataManager = dataManager;
+
+        this.command = Commands.literal("back")
+                .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_BACK))
+                .executes(this::onBack)
+                .then(Commands.literal("preference")
+                        .then(Commands.argument("type", EnumArgumentType.create(TeleportType.class))
+                                .then(Commands.argument("value", BoolArgumentType.bool())
+                                        .requires(r -> this.configManager.getBackEnablePlayerCustomPreference())
+                                        .executes(this::onSetPreference)
+                                ))
+                )
+                .build();
     }
 
-    private final LiteralCommandNode<CommandSourceStack> COMMAND = Commands.literal("back")
-            .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_BACK))
-            .executes(this::onBack)
-            .build();
+    private int onSetPreference(CommandContext<CommandSourceStack> context) {
+        var source = context.getSource();
+        var sender = source.getSender();
+        var executor = source.getExecutor();
+        if (!CommandHelper.ensureAsPlayer(sender, executor)) {
+            return 0;
+        }
+
+        var preference = context.getArgument("type", TeleportType.class);
+        var value = context.getArgument("value", Boolean.class);
+
+        var player = (Player) executor;
+        assert player != null;
+        var data = dataManager.getPlayerData(player);
+        data.addLocationRecordingPreference(preference, value);
+        data.save();
+        player.sendMessage(ComponentHelper.createBackPreferenceSet());
+
+        return 1;
+    }
 
     private int onBack(CommandContext<CommandSourceStack> context) {
         var source = context.getSource();
@@ -52,6 +88,6 @@ public class BackCommand implements ICommand {
 
     @Override
     public void register(Commands registrar) {
-        registrar.register(COMMAND);
+        registrar.register(command);
     }
 }

@@ -3,6 +3,7 @@ package io.github.elihuso.simpleteleport.listener;
 import io.github.elihuso.simpleteleport.config.ConfigManager;
 import io.github.elihuso.simpleteleport.config.data.DataManager;
 import io.github.elihuso.simpleteleport.config.data.enums.TeleportType;
+import io.github.elihuso.simpleteleport.config.data.player.PlayerData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -28,8 +29,7 @@ public class PlayerTeleportListener implements Listener {
         var type = TeleportType.fromBukkit(event.getCause());
         var data = dataManager.getPlayerData(player);
 
-        if ((configManager.getBackPlayerCustomPreference() && data.shouldRecordLocation(type, configManager.getBackPreferenceDefault(type)))
-                || configManager.getBackPreferenceDefault(type)) {
+        if (shouldRecord(data, type)) {
             data.setPreviousLocation(location);
             data.save();
         }
@@ -41,10 +41,18 @@ public class PlayerTeleportListener implements Listener {
         var location = event.getPlayer().getLocation();
         var data = dataManager.getPlayerData(player);
         var type = TeleportType.DEATH;
-        if ((configManager.getBackPlayerCustomPreference() && data.shouldRecordLocation(type, configManager.getBackPreferenceDefault(type)))
-                || configManager.getBackPreferenceDefault(type)) {
+        if (shouldRecord(data, type)) {
             data.setPreviousLocation(location);
             data.save();
+        }
+    }
+
+    private boolean shouldRecord(PlayerData data, TeleportType type) {
+        var def = configManager.getBackPreferenceDefault(type);
+        if (configManager.getBackEnablePlayerCustomPreference()) {
+            return data.shouldRecordLocation(type, def);
+        } else {
+            return def;
         }
     }
 }

@@ -13,7 +13,7 @@ public class ConfigManager {
         config = plugin.getConfig();
     }
 
-    public boolean getBackPlayerCustomPreference() {
+    public boolean getBackEnablePlayerCustomPreference() {
         return config.getBoolean("back.recording-preference.player-custom", true);
     }
 

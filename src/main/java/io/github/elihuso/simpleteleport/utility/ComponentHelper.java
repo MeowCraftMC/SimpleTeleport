@@ -42,6 +42,10 @@ public class ComponentHelper {
         return Component.text("还没有记录到可以返回的位置！").color(NamedTextColor.RED);
     }
 
+    public static Component createBackPreferenceSet() {
+        return Component.text("保存成功。").color(NamedTextColor.GREEN);
+    }
+
     public static Component createTeleportFailed() {
         return Component.text("由于 Bukkit API 的限制导致传送失败了！").color(NamedTextColor.RED);
     }
