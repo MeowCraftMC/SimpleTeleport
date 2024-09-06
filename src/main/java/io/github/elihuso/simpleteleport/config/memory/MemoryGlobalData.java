@@ -29,7 +29,7 @@ public class MemoryGlobalData {
         tphereRequests.put(requester, requested, expire);
     }
 
-    public Set<UUID> getTpaRequesting(UUID requested) {
+    public Set<UUID> getTpaRequested(UUID requested) {
         var now = ZonedDateTime.now();
         return tpaRequests.column(requested).entrySet().stream()
                 .filter(e -> now.isBefore(e.getValue()))
@@ -37,7 +37,7 @@ public class MemoryGlobalData {
                 .collect(Collectors.toSet());
     }
 
-    public Set<UUID> getTpHereRequesting(UUID requested) {
+    public Set<UUID> getTpHereRequested(UUID requested) {
         var now = ZonedDateTime.now();
         return tphereRequests.column(requested).entrySet().stream()
                 .filter(e -> now.isBefore(e.getValue()))

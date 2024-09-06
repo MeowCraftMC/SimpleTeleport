@@ -59,7 +59,9 @@ public class TeleportCommand implements ICommand {
     private final LiteralCommandNode<CommandSourceStack> TP_DENY = Commands.literal("tpdeny")
             .then(Commands.argument("target", ArgumentTypes.player())
                     .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_CANCEL))
+                    .executes(this::onTpDeny)
             )
+            .executes(this::onTpDenyAll)
             .build();
 
     @Override
@@ -162,10 +164,11 @@ public class TeleportCommand implements ICommand {
 
         var globalData = memoryDataManager.getGlobalData();
         if (globalData.removeTpRequest(player.getUniqueId(), target.getUniqueId())) {
-            target.sendMessage(ComponentHelper.createTpCanceledMessage(player));
+            target.sendMessage(ComponentHelper.createTpCanceled(player));
+            player.sendMessage(ComponentHelper.createTpCanceledTo(target));
+        } else {
+            player.sendMessage(ComponentHelper.createTpNoSuchRequest(target));
         }
-
-        player.sendMessage(ComponentHelper.createTpCancelResult());
         return 1;
     }
 
@@ -183,11 +186,11 @@ public class TeleportCommand implements ICommand {
         for (var result : globalData.removeTpRequest(player.getUniqueId())) {
             var p = Bukkit.getPlayer(result);
             if (p != null) {
-                p.sendMessage(ComponentHelper.createTpCanceledMessage(player));
+                p.sendMessage(ComponentHelper.createTpCanceled(player));
             }
         }
 
-        player.sendMessage(ComponentHelper.createTpCancelResult());
+        player.sendMessage(ComponentHelper.createTpCanceledAll());
         return 1;
     }
 
@@ -205,25 +208,29 @@ public class TeleportCommand implements ICommand {
         var target = context.getArgument("target", PlayerSelectorArgumentResolver.class).resolve(source).getFirst();
 
         var globalData = memoryDataManager.getGlobalData();
+        Player teleported = null;
+        Player teleportDest = null;
         if (globalData.hasTpaRequested(player.getUniqueId(), target.getUniqueId())) {
-            if (!TeleportHelper.teleportTo(player, target)) {
-                player.sendMessage(ComponentHelper.createTeleportFailed());
-                return 0;
-            }
-
-            return 1;
+            teleported = player;
+            teleportDest = target;
+        } else if (globalData.hasTpHereRequested(player.getUniqueId(), target.getUniqueId())) {
+            teleported = target;
+            teleportDest = player;
+        } else {
+            player.sendMessage(ComponentHelper.createTpNoSuchRequest(target));
+            return 0;
         }
 
-        if (globalData.hasTpHereRequested(player.getUniqueId(), target.getUniqueId())) {
-            if (!TeleportHelper.teleportTo(target, player)) {
-                player.sendMessage(ComponentHelper.createTeleportFailed());
-                return 0;
-            }
+        globalData.removeTpRequest(player.getUniqueId(), target.getUniqueId());
+        if (TeleportHelper.teleportTo(teleported, teleportDest)) {
+            teleported.sendMessage(ComponentHelper.createTpAcceptedFrom(teleportDest));
+            teleportDest.sendMessage(ComponentHelper.createTpAcceptedBy(teleported));
             return 1;
+        } else {
+            teleported.sendMessage(ComponentHelper.createTeleportFailed());
+            teleportDest.sendMessage(ComponentHelper.createTeleportFailed());
+            return 0;
         }
-
-
-        return 0;
     }
 
     private int onTpAcceptAll(CommandContext<CommandSourceStack> context) {
@@ -237,8 +244,90 @@ public class TeleportCommand implements ICommand {
         assert player != null;
 
         var globalData = memoryDataManager.getGlobalData();
+        for (var u : globalData.getTpaRequested(player.getUniqueId())) {
+            var p = Bukkit.getPlayer(u);
+            if (p != null && p.isConnected()) {
+                globalData.removeTpRequest(player.getUniqueId(), u);
+                p.sendMessage(ComponentHelper.createTpAcceptedBy(player));
+                doTeleport(player, p);
+            }
+        }
 
+        for (var u : globalData.getTpHereRequested(player.getUniqueId())) {
+            var p = Bukkit.getPlayer(u);
+            if (p != null && p.isConnected()) {
+                globalData.removeTpRequest(player.getUniqueId(), u);
+                p.sendMessage(ComponentHelper.createTpAcceptedBy(player));
+                doTeleport(p, player);
+            }
+        }
 
-        return 0;
+        player.sendMessage(ComponentHelper.createTpAcceptedAll());
+
+        return 1;
+    }
+
+    private void doTeleport(Player player, Player target) {
+        if (!TeleportHelper.teleportTo(player, target)) {
+            player.sendMessage(ComponentHelper.createTeleportFailed());
+            target.sendMessage(ComponentHelper.createTeleportFailed());
+        }
+    }
+
+    private int onTpDeny(CommandContext<CommandSourceStack> context) {
+        var source = context.getSource();
+        var sender = source.getSender();
+        var entity = source.getExecutor();
+        if (!CommandHelper.ensureAsPlayer(sender, entity)) {
+            return 0;
+        }
+
+        var player = (Player) entity;
+        assert player != null;
+
+        var target = context.getArgument("target", PlayerSelectorArgumentResolver.class).resolve(source).getFirst();
+
+        var globalData = memoryDataManager.getGlobalData();
+        if (globalData.hasTpRequested(player.getUniqueId(), target.getUniqueId())) {
+            globalData.removeTpRequest(player.getUniqueId(), target.getUniqueId());
+            player.sendMessage(ComponentHelper.createTpDeniedFrom(player));
+            target.sendMessage(ComponentHelper.createTpDeniedBy(player));
+            return 1;
+        } else {
+            player.sendMessage(ComponentHelper.createTpNoSuchRequest(target));
+            return 0;
+        }
+    }
+
+    private int onTpDenyAll(CommandContext<CommandSourceStack> context) {
+        var source = context.getSource();
+        var sender = source.getSender();
+        var entity = source.getExecutor();
+        if (!CommandHelper.ensureAsPlayer(sender, entity)) {
+            return 0;
+        }
+
+        var player = (Player) entity;
+        assert player != null;
+
+        var globalData = memoryDataManager.getGlobalData();
+        for (var u : globalData.getTpaRequested(player.getUniqueId())) {
+            var p = Bukkit.getPlayer(u);
+            if (p != null) {
+                globalData.removeTpRequest(player.getUniqueId(), u);
+                p.sendMessage(ComponentHelper.createTpDeniedBy(player));
+            }
+        }
+
+        for (var u : globalData.getTpHereRequested(player.getUniqueId())) {
+            var p = Bukkit.getPlayer(u);
+            if (p != null) {
+                globalData.removeTpRequest(player.getUniqueId(), u);
+                p.sendMessage(ComponentHelper.createTpDeniedBy(player));
+            }
+        }
+
+        player.sendMessage(ComponentHelper.createTpDeniedAll());
+        return 1;
     }
 }

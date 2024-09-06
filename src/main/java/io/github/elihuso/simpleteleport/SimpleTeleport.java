@@ -5,6 +5,7 @@ import io.github.elihuso.simpleteleport.command.TeleportCommand;
 import io.github.elihuso.simpleteleport.config.ConfigManager;
 import io.github.elihuso.simpleteleport.config.data.DataManager;
 import io.github.elihuso.simpleteleport.config.memory.MemoryDataManager;
+import io.github.elihuso.simpleteleport.listener.PlayerLogoutListener;
 import io.github.elihuso.simpleteleport.listener.PlayerTeleportListener;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.registrar.ReloadableRegistrarEvent;
@@ -47,6 +48,7 @@ public final class SimpleTeleport extends JavaPlugin {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, this::registerCommands);
 
         getServer().getPluginManager().registerEvents(new PlayerTeleportListener(configManager, dataManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerLogoutListener(memoryDataManager), this);
     }
 
     private void registerCommands(@NotNull ReloadableRegistrarEvent<Commands> event) {

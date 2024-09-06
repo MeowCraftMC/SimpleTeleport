@@ -92,15 +92,43 @@ public class ComponentHelper {
                 .append(createJoin("请求在", "秒内有效。", Component.text(timeout).color(NamedTextColor.RED)).color(NamedTextColor.GOLD).append(Component.newline()));
     }
 
-    public static Component createTpCancelResult() {
-        return Component.text("已取消所有未被处理的传送请求。").color(NamedTextColor.GREEN);
+    public static Component createTpNoSuchRequest(Player player) {
+        return createJoin("没有关于", "的传送请求可以处理！", createPlayerReference(player)).color(NamedTextColor.RED);
     }
 
-    public static Component createTpCancelResult(Player player) {
+    public static Component createTpCanceledTo(Player player) {
         return createJoin("已取消向", "发送的传送请求。", createPlayerReference(player)).color(NamedTextColor.GREEN);
     }
 
-    public static Component createTpCanceledMessage(Player player) {
+    public static Component createTpCanceledAll() {
+        return Component.text("已取消所有未被处理的传送请求。").color(NamedTextColor.GREEN);
+    }
+
+    public static Component createTpCanceled(Player player) {
         return createJoin("玩家", "发起的传送请求已取消。", createPlayerReference(player)).color(NamedTextColor.GOLD);
+    }
+
+    public static Component createTpAcceptedFrom(Player player) {
+        return createJoin("已接受来自", "的传送请求。", createPlayerReference(player)).color(NamedTextColor.GREEN);
+    }
+
+    public static Component createTpAcceptedAll() {
+        return Component.text("已接受所有传送请求。").color(NamedTextColor.GREEN);
+    }
+
+    public static Component createTpAcceptedBy(Player player) {
+        return createJoin("你的传送请求已经被", "接受。", createPlayerReference(player)).color(NamedTextColor.GOLD);
+    }
+
+    public static Component createTpDeniedFrom(Player player) {
+        return createJoin("已拒绝来自", "的传送请求。", createPlayerReference(player)).color(NamedTextColor.GREEN);
+    }
+
+    public static Component createTpDeniedAll() {
+        return Component.text("已拒绝所有传送请求。").color(NamedTextColor.GREEN);
+    }
+
+    public static Component createTpDeniedBy(Player player) {
+        return createJoin("你的传送请求已经被", "拒绝。", createPlayerReference(player)).color(NamedTextColor.GOLD);
     }
 }
