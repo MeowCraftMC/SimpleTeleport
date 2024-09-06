@@ -274,7 +274,7 @@ public class TeleportCommand implements ICommand {
         }
     }
 
-    private int onTpDeny(CommandContext<CommandSourceStack> context) {
+    private int onTpDeny(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var source = context.getSource();
         var sender = source.getSender();
         var entity = source.getExecutor();
