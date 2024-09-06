@@ -2,6 +2,7 @@ package io.github.elihuso.simpleteleport;
 
 import io.github.elihuso.simpleteleport.command.BackCommand;
 import io.github.elihuso.simpleteleport.command.TeleportCommand;
+import io.github.elihuso.simpleteleport.command.WorldTeleportCommand;
 import io.github.elihuso.simpleteleport.config.ConfigManager;
 import io.github.elihuso.simpleteleport.config.data.DataManager;
 import io.github.elihuso.simpleteleport.config.memory.MemoryDataManager;
@@ -55,6 +56,7 @@ public final class SimpleTeleport extends JavaPlugin {
         var commands = event.registrar();
         new BackCommand(configManager, dataManager).register(commands);
         new TeleportCommand(configManager, memoryDataManager).register(commands);
+        new WorldTeleportCommand().register(commands);
     }
 
     @Override

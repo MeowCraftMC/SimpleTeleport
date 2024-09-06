@@ -27,50 +27,48 @@ public class TeleportCommand implements ICommand {
     public TeleportCommand(ConfigManager configManager, MemoryDataManager memoryDataManager) {
         this.configManager = configManager;
         this.memoryDataManager = memoryDataManager;
-
     }
 
-    private final LiteralCommandNode<CommandSourceStack> TPA = Commands.literal("tpa")
+    private final LiteralCommandNode<CommandSourceStack> tpa = Commands.literal("tpa")
             .then(Commands.argument("target", ArgumentTypes.player())
                     .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_USE))
                     .executes(this::onTpa))
             .build();
 
-    private final LiteralCommandNode<CommandSourceStack> TP_HERE = Commands.literal("tphere")
+    private final LiteralCommandNode<CommandSourceStack> tpHere = Commands.literal("tphere")
             .then(Commands.argument("target", ArgumentTypes.player())
                     .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_HERE))
                     .executes(this::onTpHere))
             .build();
 
-    private final LiteralCommandNode<CommandSourceStack> TP_CANCEL = Commands.literal("tpcancel")
+    private final LiteralCommandNode<CommandSourceStack> tpCancel = Commands.literal("tpcancel")
             .then(Commands.argument("target", ArgumentTypes.player())
                     .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_CANCEL))
                     .executes(this::onTpCancel))
             .executes(this::onTpCancelAll)
             .build();
 
-    private final LiteralCommandNode<CommandSourceStack> TP_ACCEPT = Commands.literal("tpaccept")
+    private final LiteralCommandNode<CommandSourceStack> tpAccept = Commands.literal("tpaccept")
             .then(Commands.argument("target", ArgumentTypes.player())
-                    .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_CANCEL))
+                    .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_ACCEPT))
                     .executes(this::onTpAccept))
             .executes(this::onTpAcceptAll)
             .build();
 
-    private final LiteralCommandNode<CommandSourceStack> TP_DENY = Commands.literal("tpdeny")
+    private final LiteralCommandNode<CommandSourceStack> tpDeny = Commands.literal("tpdeny")
             .then(Commands.argument("target", ArgumentTypes.player())
-                    .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_CANCEL))
-                    .executes(this::onTpDeny)
-            )
+                    .requires(r -> r.getSender().hasPermission(Constants.PERMISSION_TPA_DENY))
+                    .executes(this::onTpDeny))
             .executes(this::onTpDenyAll)
             .build();
 
     @Override
     public void register(Commands registrar) {
-        registrar.register(TPA);
-        registrar.register(TP_HERE);
-        registrar.register(TP_CANCEL);
-        registrar.register(TP_ACCEPT, List.of("tpacc"));
-        registrar.register(TP_DENY, List.of("tpdn"));
+        registrar.register(tpa);
+        registrar.register(tpHere);
+        registrar.register(tpCancel);
+        registrar.register(tpAccept, List.of("tpacc"));
+        registrar.register(tpDeny, List.of("tpdn"));
     }
 
     private int onTpa(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

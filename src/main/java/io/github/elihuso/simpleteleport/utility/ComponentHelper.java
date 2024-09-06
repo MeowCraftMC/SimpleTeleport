@@ -135,4 +135,8 @@ public class ComponentHelper {
     public static Component createTpDeniedBy(Player player) {
         return createJoin("你的传送请求已经被", "拒绝。", createPlayerReference(player)).color(NamedTextColor.GOLD);
     }
+
+    public static Component createTpNoBed() {
+        return Component.text("没有床或者重生锚可供传送！").color(NamedTextColor.RED);
+    }
 }
