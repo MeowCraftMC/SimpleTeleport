@@ -74,7 +74,7 @@ public class ComponentHelper {
                 .append(createJoin("玩家", "想要传送到你的位置：", createPlayerReference(requester)).color(NamedTextColor.GREEN).append(Component.newline()))
                 .append(createJoin("使用", "以接受；", createCommand("/tpaccept " + requester.getName())).color(NamedTextColor.GOLD).append(Component.newline()))
                 .append(createJoin("使用", "以拒绝。", createCommand("/tpdeny " + requester.getName())).color(NamedTextColor.GOLD).append(Component.newline()))
-                .append(createJoin("请求在", "秒内有效。", Component.text(timeout).color(NamedTextColor.RED)).color(NamedTextColor.GOLD).append(Component.newline()));
+                .append(createJoin("请求在", "秒内有效。", Component.text(timeout).color(NamedTextColor.RED)).color(NamedTextColor.GOLD));
     }
 
     public static Component createTpHereRequesterResult(Player target, long timeout) {
@@ -89,7 +89,7 @@ public class ComponentHelper {
                 .append(createJoin("玩家", "想要你传送到对方的位置：", createPlayerReference(requester)).color(NamedTextColor.GREEN).append(Component.newline()))
                 .append(createJoin("使用", "以接受；", createCommand("/tpaccept " + requester.getName())).color(NamedTextColor.GOLD).append(Component.newline()))
                 .append(createJoin("使用", "以拒绝。", createCommand("/tpdeny " + requester.getName())).color(NamedTextColor.GOLD).append(Component.newline()))
-                .append(createJoin("请求在", "秒内有效。", Component.text(timeout).color(NamedTextColor.RED)).color(NamedTextColor.GOLD).append(Component.newline()));
+                .append(createJoin("请求在", "秒内有效。", Component.text(timeout).color(NamedTextColor.RED)).color(NamedTextColor.GOLD));
     }
 
     public static Component createTpNoSuchRequest(Player player) {

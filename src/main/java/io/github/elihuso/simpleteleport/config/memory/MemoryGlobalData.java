@@ -32,7 +32,7 @@ public class MemoryGlobalData {
     public Set<UUID> getTpaRequested(UUID requested) {
         var now = ZonedDateTime.now();
         return tpaRequests.column(requested).entrySet().stream()
-                .filter(e -> now.isBefore(e.getValue()))
+                .filter(e -> isAvailable(now, e.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
     }
@@ -40,15 +40,14 @@ public class MemoryGlobalData {
     public Set<UUID> getTpHereRequested(UUID requested) {
         var now = ZonedDateTime.now();
         return tphereRequests.column(requested).entrySet().stream()
-                .filter(e -> now.isBefore(e.getValue()))
+                .filter(e -> isAvailable(now, e.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
     }
 
     private boolean hasTpRequested(Table<UUID, UUID, ZonedDateTime> table, UUID requester, UUID requested) {
         var row = table.row(requester);
-        var now = ZonedDateTime.now();
-        return row.containsKey(requested) && now.isBefore(row.get(requested));
+        return row.containsKey(requested) && isAvailable(row.get(requested));
     }
 
     public boolean hasTpaRequested(UUID requester, UUID requested) {
@@ -68,14 +67,14 @@ public class MemoryGlobalData {
         var now = ZonedDateTime.now();
 
         for (var entry : tpaRequests.row(requester).entrySet()) {
-            if (now.isBefore(entry.getValue())) {
+            if (isAvailable(now, entry.getValue())) {
                 list.add(entry.getKey());
             }
             tpaRequests.remove(requester, entry.getKey());
         }
 
         for (var entry : tphereRequests.row(requester).entrySet()) {
-            if (now.isBefore(entry.getValue())) {
+            if (isAvailable(now, entry.getValue())) {
                 list.add(entry.getKey());
             }
             tphereRequests.remove(requester, entry.getKey());
@@ -85,17 +84,26 @@ public class MemoryGlobalData {
     }
 
     public boolean removeTpRequest(UUID requester, UUID requested) {
+        var now = ZonedDateTime.now();
         var result = false;
         var expire = tpaRequests.remove(requester, requested);
-        if (expire != null && ZonedDateTime.now().isAfter(expire)) {
+        if (expire != null && isAvailable(now, expire)) {
             result = true;
         }
 
         expire = tphereRequests.remove(requester, requested);
-        if (expire != null && ZonedDateTime.now().isAfter(expire)) {
+        if (expire != null && isAvailable(now, expire)) {
             result = true;
         }
 
         return result;
+    }
+
+    private boolean isAvailable(ZonedDateTime expire) {
+        return isAvailable(ZonedDateTime.now(), expire);
+    }
+
+    private boolean isAvailable(ZonedDateTime now, ZonedDateTime expire) {
+        return now.isBefore(expire);
     }
 }
