@@ -31,6 +31,8 @@ public class WorldTeleportCommand implements ICommand {
     @Override
     public void register(Commands registrar) {
         registrar.register(spawn);
+        registrar.register(bed);
+        registrar.register(top);
     }
 
     private int onSpawn(CommandContext<CommandSourceStack> context) {

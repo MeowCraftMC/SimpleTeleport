@@ -1,5 +1,7 @@
 package io.github.elihuso.simpleteleport.config.data.player;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import io.github.elihuso.simpleteleport.config.data.enums.TeleportType;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -7,9 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @ConfigSerializable
 public class PlayerData {
@@ -23,6 +23,9 @@ public class PlayerData {
     @Setting
     private final Map<TeleportType, Boolean> locationRecordingPreferences = new HashMap<>();
 
+    @Setting
+    private final Map<String, Location> homes = new HashMap<>();
+
     protected void setLoader(PlayerDataLoader loader, UUID uuid) {
         this.loader = loader;
         this.uuid = uuid;
@@ -34,7 +37,7 @@ public class PlayerData {
 
     @Nullable
     public Location getPreviousLocation() {
-        return previousLocation;
+        return previousLocation != null ? previousLocation.clone() : null;
     }
 
     public void setPreviousLocation(@NotNull Location previousLocation) {
@@ -59,5 +62,29 @@ public class PlayerData {
         }
 
         return defValue;
+    }
+
+    public Map<String, Location> getHomes() {
+        var builder = ImmutableMap.<String, Location>builder();
+        for (var entry : homes.entrySet()) {
+            builder.put(entry.getKey(), entry.getValue().clone());
+        }
+        return builder.build();
+    }
+
+    public void addHome(String name, Location home) {
+        homes.put(name, home);
+    }
+
+    public void delHome(String name) {
+        homes.remove(name);
+    }
+
+    public Location getHome(String name) {
+        return homes.get(name).clone();
+    }
+
+    public Set<String> listHomes() {
+        return ImmutableSet.copyOf(homes.keySet());
     }
 }

@@ -1,9 +1,9 @@
 package io.github.elihuso.simpleteleport.command;
 
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.github.elihuso.simpleteleport.Constants;
+import io.github.elihuso.simpleteleport.command.arguments.BoolOrUnsetArgumentType;
 import io.github.elihuso.simpleteleport.command.arguments.EnumArgumentType;
 import io.github.elihuso.simpleteleport.config.ConfigManager;
 import io.github.elihuso.simpleteleport.config.data.DataManager;
@@ -32,10 +32,11 @@ public class BackCommand implements ICommand {
                 .executes(this::onBack)
                 .then(Commands.literal("preference")
                         .then(Commands.argument("type", EnumArgumentType.create(TeleportType.class))
-                                .then(Commands.argument("value", BoolArgumentType.bool())
+                                .then(Commands.argument("value", BoolOrUnsetArgumentType.create())
                                         .requires(r -> this.configManager.getBackEnablePlayerCustomPreference())
                                         .executes(this::onSetPreference)
-                                ))
+                                )
+                        )
                 )
                 .build();
     }
@@ -49,12 +50,17 @@ public class BackCommand implements ICommand {
         }
 
         var preference = context.getArgument("type", TeleportType.class);
-        var value = context.getArgument("value", Boolean.class);
+        var value = context.getArgument("value", BoolOrUnsetArgumentType.Value.class);
 
         var player = (Player) executor;
         assert player != null;
         var data = dataManager.getPlayerData(player);
-        data.addLocationRecordingPreference(preference, value);
+        if (value.getValue() == null) {
+            data.removeLocationRecordingPreference(preference);
+        } else {
+            data.addLocationRecordingPreference(preference, value.getValue());
+        }
+
         data.save();
         player.sendMessage(ComponentHelper.createBackPreferenceSet());
 
