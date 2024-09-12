@@ -47,6 +47,8 @@ public class WorldTeleportCommand implements ICommand {
             source.getSender().sendMessage(ComponentHelper.createTeleportFailed());
             return 0;
         }
+
+        source.getSender().sendMessage(ComponentHelper.createTpSpawn());
         return 1;
     }
 
@@ -70,6 +72,8 @@ public class WorldTeleportCommand implements ICommand {
             player.sendMessage(ComponentHelper.createTeleportFailed());
             return 0;
         }
+
+        source.getSender().sendMessage(ComponentHelper.createTpBed());
         return 1;
     }
 
@@ -89,6 +93,7 @@ public class WorldTeleportCommand implements ICommand {
             return 0;
         }
 
+        source.getSender().sendMessage(ComponentHelper.createTpTop());
         return 1;
     }
 }

@@ -51,7 +51,7 @@ public class ComponentHelper {
     }
 
     public static Component createBackSuccessful() {
-        return Component.text("Wooah~").color(NamedTextColor.GREEN);
+        return Component.text("你在开玩笑。").color(NamedTextColor.GREEN);
     }
 
     public static Component createPlayerOffline() {
@@ -138,5 +138,17 @@ public class ComponentHelper {
 
     public static Component createTpNoBed() {
         return Component.text("没有床或者重生锚可供传送！").color(NamedTextColor.RED);
+    }
+
+    public static Component createTpSpawn() {
+        return Component.text("风息，风又起……").color(NamedTextColor.GREEN);
+    }
+
+    public static Component createTpBed() {
+        return Component.text("全世界……折返！").color(NamedTextColor.GREEN);
+    }
+
+    public static Component createTpTop() {
+        return Component.text("Wooah~").color(NamedTextColor.GREEN);
     }
 }
