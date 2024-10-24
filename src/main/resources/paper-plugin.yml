@@ -1,6 +1,6 @@
 name: SimpleTeleport
 version: '${version}'
-main: io.github.elihuso.simpleteleport.SimpleTeleport
+main: al.yn.simpleteleport.SimpleTeleport
 api-version: '1.21.1'
 
 permissions:
