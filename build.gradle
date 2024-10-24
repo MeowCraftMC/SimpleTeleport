@@ -4,8 +4,8 @@ plugins {
     id 'com.gradleup.shadow' version '8.3.0'
 }
 
-group = 'io.github.elihuso'
-version = '1.2.1'
+group = 'al.yn'
+version = '1.2.2'
 
 repositories {
     mavenCentral()
@@ -53,5 +53,5 @@ shadowJar {
     mergeServiceFiles()
 
     enableRelocation true
-    relocationPrefix 'io.github.elihuso.simpleteleport.libs'
+    relocationPrefix 'al.yn.simpleteleport.libs'
 }
