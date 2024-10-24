@@ -2,7 +2,7 @@ package al.yn.simpleteleport.config.data.player;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import al.yn.simpleteleport.config.data.enums.TeleportType;
+import al.yn.simpleteleport.config.data.TeleportType;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

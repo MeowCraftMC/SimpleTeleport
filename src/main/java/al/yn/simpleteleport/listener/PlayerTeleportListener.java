@@ -2,7 +2,7 @@ package al.yn.simpleteleport.listener;
 
 import al.yn.simpleteleport.config.ConfigManager;
 import al.yn.simpleteleport.config.data.DataManager;
-import al.yn.simpleteleport.config.data.enums.TeleportType;
+import al.yn.simpleteleport.config.data.TeleportType;
 import al.yn.simpleteleport.config.data.player.PlayerData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

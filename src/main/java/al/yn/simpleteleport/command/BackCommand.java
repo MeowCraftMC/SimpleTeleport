@@ -7,7 +7,7 @@ import al.yn.simpleteleport.command.arguments.BoolOrUnsetArgumentType;
 import al.yn.simpleteleport.command.arguments.EnumArgumentType;
 import al.yn.simpleteleport.config.ConfigManager;
 import al.yn.simpleteleport.config.data.DataManager;
-import al.yn.simpleteleport.config.data.enums.TeleportType;
+import al.yn.simpleteleport.config.data.TeleportType;
 import al.yn.simpleteleport.utility.CommandHelper;
 import al.yn.simpleteleport.utility.ComponentHelper;
 import al.yn.simpleteleport.utility.TeleportHelper;

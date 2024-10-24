@@ -1,4 +1,4 @@
-package al.yn.simpleteleport.config.data.enums;
+package al.yn.simpleteleport.config.data;
 
 import org.bukkit.event.player.PlayerTeleportEvent;
 

@@ -1,6 +1,6 @@
 package al.yn.simpleteleport.config;
 
-import al.yn.simpleteleport.config.data.enums.TeleportType;
+import al.yn.simpleteleport.config.data.TeleportType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
