@@ -149,6 +149,6 @@ public class ComponentHelper {
     }
 
     public static Component createTpTop() {
-        return Component.text("Wooah~").color(NamedTextColor.GREEN);
+        return Component.text("芜湖~").color(NamedTextColor.GREEN);
     }
 }

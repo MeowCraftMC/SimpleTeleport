@@ -12,3 +12,8 @@ back:
 tpa:
   # Request timeout in seconds
   timeout: 30
+
+home:
+  max-home-count: 3
+  # If enabled, plugin will respect the player meta named 'simpleteleport-home-limit' as a number in Luckperms plugin.
+  per-player-limit: false

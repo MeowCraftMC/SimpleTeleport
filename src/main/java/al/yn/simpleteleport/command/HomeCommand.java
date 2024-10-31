@@ -1,5 +1,6 @@
 package al.yn.simpleteleport.command;
 
+import al.yn.simpleteleport.utility.CommandHelper;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -8,6 +9,8 @@ import al.yn.simpleteleport.config.ConfigManager;
 import al.yn.simpleteleport.config.data.DataManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings("UnstableApiUsage")
 public class HomeCommand implements ICommand {
@@ -60,7 +63,17 @@ public class HomeCommand implements ICommand {
 
 
     private int onSetHome(CommandContext<CommandSourceStack> context) {
-        return 0;
+        var source = context.getSource();
+        var entity = source.getExecutor();
+        if (!CommandHelper.ensureAsPlayer(source.getSender(), entity)) {
+            return 0;
+        }
+
+        var player = (Player) entity;
+        assert player != null;
+
+
+        return 1;
     }
 
     private int onDelHome(CommandContext<CommandSourceStack> context) {
@@ -85,5 +98,21 @@ public class HomeCommand implements ICommand {
 
     private int onListHome(CommandContext<CommandSourceStack> context) {
         return 0;
+    }
+
+    private void onSetHome(Player player, String name) {
+
+    }
+
+    private void onDelHome(Player player, String name) {
+
+    }
+
+    private void onTpHome(Player player, String name) {
+
+    }
+
+    private void onListHome(Player player) {
+
     }
 }

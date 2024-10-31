@@ -73,7 +73,7 @@ public class PlayerData {
     }
 
     public void addHome(String name, Location home) {
-        homes.put(name, home);
+        homes.put(name, home.clone());
     }
 
     public void delHome(String name) {
@@ -82,9 +82,5 @@ public class PlayerData {
 
     public Location getHome(String name) {
         return homes.get(name).clone();
-    }
-
-    public Set<String> listHomes() {
-        return ImmutableSet.copyOf(homes.keySet());
     }
 }
