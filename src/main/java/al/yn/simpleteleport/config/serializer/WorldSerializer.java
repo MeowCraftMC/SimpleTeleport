@@ -1,6 +1,7 @@
 package al.yn.simpleteleport.config.serializer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
@@ -17,7 +18,14 @@ public class WorldSerializer implements TypeSerializer<World> {
     public World deserialize(Type type, ConfigurationNode node) throws SerializationException {
         var str = node.getString();
         if (str != null) {
-            return Bukkit.getWorld(str);
+            try {
+                var key = NamespacedKey.fromString(str);
+                if (key != null) {
+                    return Bukkit.getWorld(key);
+                }
+            } catch (Exception ex) {
+                throw new SerializationException(ex);
+            }
         }
 
         return null;
@@ -30,6 +38,6 @@ public class WorldSerializer implements TypeSerializer<World> {
             return;
         }
 
-        node.set(obj.getName());
+        node.set(obj.getKey().asString());
     }
 }
