@@ -96,7 +96,7 @@ public class HomeCommand implements ICommand {
         var player = (Player) entity;
         assert player != null;
 
-        onSetHome(player, "Home");
+        onSetHome(player, "home");
 
         return 1;
     }
@@ -111,7 +111,7 @@ public class HomeCommand implements ICommand {
         var player = (Player) entity;
         assert player != null;
 
-        onDelHome(player, "Home");
+        onDelHome(player, "home");
 
         return 1;
     }
@@ -126,7 +126,7 @@ public class HomeCommand implements ICommand {
         var player = (Player) entity;
         assert player != null;
 
-        onTpHome(player, "Home");
+        onTpHome(player, "home");
 
         return 1;
     }
