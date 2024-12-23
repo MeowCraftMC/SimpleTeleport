@@ -26,7 +26,7 @@ public class PlayerDataLoader extends CacheLoader<UUID, PlayerData> {
     private GsonConfigurationLoader getPlayerDataLoader(UUID uuid) {
         return loaders.computeIfAbsent(uuid, u -> GsonConfigurationLoader.builder()
                 .defaultOptions(options -> options.serializers(ConfigurationFactory::registerSerializers))
-                .file(new File(dataDir, u.toString() + ".yml"))
+                .file(new File(dataDir, u.toString() + ".json"))
                 .build());
     }
 
