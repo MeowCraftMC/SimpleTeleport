@@ -1,7 +1,6 @@
 package al.yn.simpleteleport.config.data.player;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import al.yn.simpleteleport.config.data.TeleportType;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -80,7 +79,15 @@ public class PlayerData {
         homes.remove(name);
     }
 
+    public boolean hasHome(String name) {
+        return homes.containsKey(name);
+    }
+
     public Location getHome(String name) {
         return homes.get(name).clone();
+    }
+
+    public int getHomeCount() {
+        return homes.size();
     }
 }

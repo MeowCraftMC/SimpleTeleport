@@ -1,6 +1,7 @@
 package al.yn.simpleteleport;
 
 import al.yn.simpleteleport.command.BackCommand;
+import al.yn.simpleteleport.command.HomeCommand;
 import al.yn.simpleteleport.command.TeleportCommand;
 import al.yn.simpleteleport.command.WorldTeleportCommand;
 import al.yn.simpleteleport.config.ConfigManager;
@@ -52,11 +53,12 @@ public final class SimpleTeleport extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerLogoutListener(memoryDataManager), this);
     }
 
-    private void registerCommands(@NotNull ReloadableRegistrarEvent<Commands> event) {
+    private void registerCommands(@NotNull ReloadableRegistrarEvent<@NotNull Commands> event) {
         var commands = event.registrar();
         new BackCommand(configManager, dataManager).register(commands);
         new TeleportCommand(configManager, memoryDataManager).register(commands);
         new WorldTeleportCommand().register(commands);
+        new HomeCommand(configManager, dataManager).register(commands);
     }
 
     @Override

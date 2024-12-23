@@ -37,4 +37,8 @@ public class ConfigManager {
     public long getTpaTimeout() {
         return config.getInt("tpa.timeout", 30);
     }
+
+    public int getHomeMaxCount() {
+        return config.getInt("home.max-home-count", 3);
+    }
 }

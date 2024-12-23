@@ -1,6 +1,8 @@
 package al.yn.simpleteleport;
 
 public class Constants {
+    public static final int DATA_VERSION = 1;
+
     public static final String PERMISSION_BACK = "simpleteleport.back.use";
 
     public static final String PERMISSION_TPA_USE = "simpleteleport.tpa.use";
