@@ -64,6 +64,10 @@ public class ComponentHelper {
         return Component.text("由于 Bukkit API 的限制导致传送失败了！").color(NamedTextColor.RED);
     }
 
+    public static Component createNoSafePlaceFailed() {
+        return Component.text("目标位置没有空余位置可供传送！").color(NamedTextColor.RED);
+    }
+
     // </editor-fold>
 
     // <editor-fold desc="Back">
@@ -98,7 +102,7 @@ public class ComponentHelper {
 
     public static Component createTpaRequesterResult(Player target, long timeout) {
         return Component.empty()
-                .append(createJoin("传送到", "的请求发送成功：", createPlayerReference(target)).color(NamedTextColor.GREEN).append(Component.newline()))
+                .append(createJoin("传送到", "的位置的请求发送成功：", createPlayerReference(target)).color(NamedTextColor.GREEN).append(Component.newline()))
                 .append(createJoin("请求在", "秒内有效，", Component.text(timeout).color(NamedTextColor.RED)).color(NamedTextColor.GOLD).append(Component.newline()))
                 .append(createJoin("使用", "以取消。", createCommand("/tpcancel " + target.getName())).color(NamedTextColor.GOLD));
     }

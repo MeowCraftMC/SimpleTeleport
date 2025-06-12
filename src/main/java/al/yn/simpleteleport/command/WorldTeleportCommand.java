@@ -85,9 +85,26 @@ public class WorldTeleportCommand implements ICommand {
         }
 
         assert executor != null;
-        var y = executor.getWorld().getHighestBlockYAt(executor.getLocation());
+        var world = executor.getWorld();
         var location = executor.getLocation().clone();
+        var y = world.getHighestBlockYAt(location);
+        var maxY = world.getLogicalHeight() - 1;
         location.setY(y + 1);
+        if (y >= maxY) {
+            var flag = false;
+            location.setY(maxY);
+            for (; location.y() > world.getMinHeight(); location.subtract(0, 1, 0)) {
+                if (TeleportHelper.isSafePlace(location)) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (!flag) {
+                source.getSender().sendMessage(ComponentHelper.createNoSafePlaceFailed());
+                return 0;
+            }
+        }
         if (!TeleportHelper.teleportTo(executor, location)) {
             source.getSender().sendMessage(ComponentHelper.createTeleportFailed());
             return 0;
